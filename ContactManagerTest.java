@@ -31,6 +31,12 @@ public class ContactManagerTest {
 		
 	}
 	
+	@After
+	public void breakDown() {
+		emptyCM = null;
+		cManagerWithContacts = null;
+	}
+	
 	@Test
 	public void testContstruction() {
 		assertNotNull(emptyCM);

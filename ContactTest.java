@@ -15,6 +15,11 @@ public class ContactTest {
 		testContact = new ContactImpl(1, "TestName", "TestNotes");
 	}
 	
+	@After
+	public void breakDown() {
+		testContact = null;
+	}
+	
 	@Test
 	public void testContstructionWithAllParams() {
 		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
