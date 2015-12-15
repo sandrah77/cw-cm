@@ -58,6 +58,20 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
+	 * Returns a list with the contacts whose name contains that string.
+	 *
+	 * If the string is the empty string, this methods returns the set
+	 * that contains all current contacts.
+	 *
+	 * @param name the string to search for
+	 * @return a list with the contacts whose name contains that string.
+	 * @throws NullPointerException if the parameter is null
+	 */
+	public Set<Contact> getContacts(String name) {
+		return null;
+	}
+	
+	/**
 	 * Returns all contacts currently in the contacts Set
 	 *
 	 * @return the Set of all contacts
