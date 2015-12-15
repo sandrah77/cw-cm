@@ -1,0 +1,10 @@
+Work plan:
+
+1) Start contact manager interface, initially building the 'addNewContact' method
+	a) build mock contact object
+
+2) Start Contact interface
+
+3) Complete the getContacts method in ContactManager
+
+4) Move on to the Meeting methods in ContactManager
