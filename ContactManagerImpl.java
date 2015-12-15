@@ -11,7 +11,7 @@ public class ContactManagerImpl implements ContactManager{
 	private Set contacts;
 	
 	public ContactManagerImpl() {
-	
+		contacts = new HashSet();
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	public Set getAllContacts() {
-		return null;
+		return contacts;
 	}
 	
 }
