@@ -16,6 +16,8 @@ public class ContactManagerImpl implements ContactManager{
 	
 	/**
 	 * Create a new contact with the specified name and notes.
+	 * Generates an ID which is returned, based on the IDs of all existing
+	 * contacts. Or 1 if the set of contacts is empty.
 	 *
 	 * @param name the name of the contact.
 	 * @param notes notes to be added about the contact.
@@ -23,7 +25,8 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalArgumentException if the name or the notes are empty strings
 	 * @throws NullPointerException if the name or the notes are null
 	 */
-	public int addNewContact(String name, String notes) {
+	public int addNewContact(String name, String notes) throws IllegalArgumentException, 
+																	NullPointerException{
 		int newID;
 		
 		if ((name.length() == 0) || (notes.length() == 0)) {
