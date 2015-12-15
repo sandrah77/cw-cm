@@ -101,6 +101,6 @@ public class ContactTest {
 		String initialNote = testContact.getNotes();
 		
 		testContact.addNotes("More notes");
-		assertEquals(initialNote + "\n\nMoreNotes", testContact.getNotes());
+		assertEquals(initialNote + "\n\nMore notes", testContact.getNotes());
 	}
 }
