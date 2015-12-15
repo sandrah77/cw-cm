@@ -19,7 +19,7 @@ public class ContactManagerTest {
 	@Test
 	public void testContstruction() {
 		assertNotNull(testCM);
-		assertTrue(testCM.getAllContacts().isEmpty());
+		assertTrue(((ContactManagerImpl) testCM).getAllContacts().isEmpty());
 	}
 	
 	
