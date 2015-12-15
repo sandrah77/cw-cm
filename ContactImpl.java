@@ -15,10 +15,27 @@ public class ContactImpl implements Contact{
 	private String name;
 	private String notes;
 	
-	public ContactImpl(int ID, String name, String notes) {
-		
+	public ContactImpl(int ID, String name, String notes) throws IllegalArgumentException,
+																	NullPointerException {
+		if (ID <= 0) {
+			throw new IllegalArgumentException("Contact ID must be greater than 0");
+		} else if ((name == null) || (notes == null)) {
+			throw new NullPointerException("Must provide ID, name and notes");
+		} else {
+			this.ID = ID;
+			this.name = name;
+			this.notes = notes;
+		}
 	}
+	
 	public ContactImpl(int ID, String name) {
+		try {
+			new ContactImpl(ID, name, "");
+		} catch (IllegalArgumentException ex) {
+			throw ex;
+		} catch (NullPointerException ex) {
+			throw new NullPointerException("Must provide ID and name");
+		}
 		
 	}
 	/**

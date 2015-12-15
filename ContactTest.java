@@ -12,26 +12,52 @@ public class ContactTest {
 	
 	@Before
 	public void setUp() {
-		testContact = new ContactImpl(0, "TestName", "TestNotes");
+		testContact = new ContactImpl(, "TestName", "TestNotes");
 	} */
 	
 	@Test
 	public void testContstructionWithAllParams() {
-		Contact myContact = new ContactImpl(0, "Sam Wilson", "Eyes like a hawk");
+		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
 		assertNotNull(myContact);
-		assertEquals(0, myContact.getId());
-		assertEquals("Sam Wilson", myContact.getName());
-		assertEquals("Eyes like a hawk", myContact.getNotes());
 	}
 	
 	@Test
 	public void testConstructionWithIdAndName() {
-		Contact myContact = new ContactImpl(0, "Steve Rogers");
+		Contact myContact = new ContactImpl(1, "Steve Rogers");
 		assertNotNull(myContact);
-		assertEquals(0, myContact.getId());
-		assertEquals("Steve Rogers", myContact.getName());
+			
+	}
+	
+	@Test
+	public void testGetId() {
+		//3 parameter constructor
+		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
+		assertEquals(1, myContact.getId());
+		
+		//2 parameter constructor
+		Contact myContact2 = new ContactImpl(1, "Steve Rogers");
+		assertEquals(1, myContact2.getId());
 		
 	}
 	
+	@Test
+	public void testGetName() {
+		//3 parameter constructor
+		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
+		assertEquals("Sam Wilson", myContact.getName());
+		
+		//2 parameter constructor
+		Contact myContact2 = new ContactImpl(1, "Steve Rogers");
+		assertEquals("Sam Wilson", myContact2.getName());
+	}
 	
+	@Test
+	public void testGetNotes() {
+		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
+		
+		assertEquals("Eyes like a hawk", myContact.getNotes());
+	}
+		
+		
+		
 }
