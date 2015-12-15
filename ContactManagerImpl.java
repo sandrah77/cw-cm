@@ -67,8 +67,23 @@ public class ContactManagerImpl implements ContactManager{
 	 * @return a list with the contacts whose name contains that string.
 	 * @throws NullPointerException if the parameter is null
 	 */
-	public Set<Contact> getContacts(String name) {
-		return null;
+	public Set<Contact> getContacts(String name) throws NullPointerException{
+		Set<Contact> output = new HashSet<Contact>();
+		
+		if (name == null) {
+			throw new NullPointerException("Must provide a name to search for, or an empty String");
+		
+		} else if (name.equals("")) {
+			return contacts;
+		
+		} else {
+			for(Contact c : contacts) {
+				if (c.getName().contains(name)) {
+					output.add(c);
+				}
+			}
+			return output;
+		}
 	}
 	
 	/**
