@@ -29,22 +29,16 @@ public class ContactImpl implements Contact{
 	}
 	
 	public ContactImpl(int ID, String name) {
-		try {
-			new ContactImpl(ID, name, "");
-		} catch (IllegalArgumentException ex) {
-			throw ex;
-		} catch (NullPointerException ex) {
-			throw new NullPointerException("Must provide ID and name");
-		}
-		
+		this(ID, name, "");
 	}
+	
 	/**
 	 * Returns the ID of the contact.
 	 *
 	 * @return the ID of the contact.
 	 */
 	public int getId() {
-		return 0;
+		return ID;
 	}
 	
 	/**
@@ -53,7 +47,7 @@ public class ContactImpl implements Contact{
 	 * @return the name of the contact.
 	 */
 	public String getName() {
-		return "";
+		return name;
 	}
 
 	/**
@@ -65,6 +59,6 @@ public class ContactImpl implements Contact{
 	 * @return a string with notes about the contact, maybe empty.
 	 */
 	public String getNotes() {
-		return "";
+		return notes;
 	}
 }

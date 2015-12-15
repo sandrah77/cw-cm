@@ -80,14 +80,19 @@ public class ContactTest {
 		
 		//2 parameter constructor
 		Contact myContact2 = new ContactImpl(1, "Steve Rogers");
-		assertEquals("Sam Wilson", myContact2.getName());
+		assertEquals("Steve Rogers", myContact2.getName());
 	}
 	
 	@Test
 	public void testGetNotes() {
+		//3 parameter constructor
 		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
 		
 		assertEquals("Eyes like a hawk", myContact.getNotes());
+		
+		//2 Parameter constructor
+		Contact myContact2 = new ContactImpl(1, "Steve Rogers");
+		assertEquals("", myContact2.getNotes());
 	}
 		
 		
