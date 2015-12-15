@@ -21,11 +21,43 @@ public class ContactTest {
 		assertNotNull(myContact);
 	}
 	
+	@Test(expected = IllegalArgumentException.class) 
+	public void test3ParamConstructorWithIdOfZero() {
+		Contact myContact = new ContactImpl(0, "Jon Stewart" , "A little green around the gills");
+	}
+	
+	@Test(expected = IllegalArgumentException.class) 
+	public void test3ParamConstructorWithNegativeId() {
+		Contact myContact = new ContactImpl(-23, "Jon Stewart" , "A little green around the gills");
+	}
+	
+	@Test(expected = NullPointerException.class) 
+	public void test3ParamConstructorWithNullNamePointer() {
+		String name = null;
+		Contact myContact = new ContactImpl(1, name, "A whole lotta nothing");
+	}
+	
 	@Test
 	public void testConstructionWithIdAndName() {
 		Contact myContact = new ContactImpl(1, "Steve Rogers");
 		assertNotNull(myContact);
 			
+	}
+	
+	@Test(expected = IllegalArgumentException.class) 
+	public void test2ParamConstructorWithIdOfZero() {
+		Contact myContact = new ContactImpl(0, "Steve Rogers");
+	}
+	
+	@Test(expected = IllegalArgumentException.class) 
+	public void test2ParamConstructorWithNegativeId() {
+		Contact myContact = new ContactImpl(-3, "Steve Rogers");
+	}
+	
+	@Test(expected = NullPointerException.class) 
+	public void test2ParamConstructorWithNullNamePointer() {
+		String name = null;
+		Contact myContact = new ContactImpl(1, name);
 	}
 	
 	@Test
