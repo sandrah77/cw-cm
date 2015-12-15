@@ -8,12 +8,12 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class ContactTest {
-	/* private Contact testContact;
+	private Contact testContact;
 	
 	@Before
 	public void setUp() {
-		testContact = new ContactImpl(, "TestName", "TestNotes");
-	} */
+		testContact = new ContactImpl(1, "TestName", "TestNotes");
+	}
 	
 	@Test
 	public void testContstructionWithAllParams() {
@@ -84,7 +84,7 @@ public class ContactTest {
 	}
 	
 	@Test
-	public void testGetNotes() {
+	public void testGetNotesForSingleNoteAddition() {
 		//3 parameter constructor
 		Contact myContact = new ContactImpl(1, "Sam Wilson", "Eyes like a hawk");
 		
@@ -96,5 +96,11 @@ public class ContactTest {
 	}
 		
 		
+	@Test	
+	public void testAddNotes() {
+		String initialNote = testContact.getNotes();
 		
+		testContact.addNotes("More notes");
+		assertEquals(initialNote + "\n\nMoreNotes", testContact.getNotes());
+	}
 }

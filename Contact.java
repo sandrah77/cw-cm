@@ -33,5 +33,11 @@ public interface Contact {
 	 * @return a string with notes about the contact, maybe empty.
 	 */
 	String getNotes();
-
+	
+	/**
+	 * Add notes about the contact.
+	 *
+	 * @param note the notes to be added
+	 */
+	void addNotes(String note);
 }
