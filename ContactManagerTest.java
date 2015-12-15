@@ -45,7 +45,7 @@ public class ContactManagerTest {
 		testCM.addNewContact(name, "TestNotes");
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = NullPointerException.class)
 	public void testAddNewContactWithNullNotesParam() {
 		String notes = null;
 		testCM.addNewContact("TestName", notes);

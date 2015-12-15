@@ -1,6 +1,6 @@
 /**
  * Interface for the ContactManager
- *
+ * A class to manage your contacts and meetings
  * @author ocouls01
  */
 
