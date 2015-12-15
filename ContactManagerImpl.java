@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class ContactManagerImpl implements ContactManager{
-	private Set contacts;
+	private Set<MockContact> contacts;
 	
 	public ContactManagerImpl() {
-		contacts = new HashSet();
+		contacts = new HashSet<MockContact>();
 	}
 	
 	/**
@@ -24,10 +24,17 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws NullPointerException if the name or the notes are null
 	 */
 	public int addNewContact(String name, String notes) {
-		return 0;
+		contacts.add(new MockContact(1, name, notes));
+		return 1;
 	}
 	
-	public Set getAllContacts() {
+	/**
+	 * Returns all contacts currently in the contacts Set
+	 *
+	 * @return the Set of all contacts
+	 */
+	
+	public Set<MockContact> getAllContacts() {
 		return contacts;
 	}
 	
