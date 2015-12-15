@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class ContactManagerImpl implements ContactManager{
-	private Set<MockContact> contacts;
+	private Set<Contact> contacts;
 	
 	public ContactManagerImpl() {
-		contacts = new HashSet<MockContact>();
+		contacts = new HashSet<Contact>();
 	}
 	
 	/**
@@ -40,17 +40,17 @@ public class ContactManagerImpl implements ContactManager{
 		} else if (contacts.isEmpty()) {
 			
 			newID = 1;
-			contacts.add(new MockContact(newID, name, notes));
+			contacts.add(new ContactImpl(newID, name, notes));
 			
 		} else {
 			newID = 0;
-			for (MockContact c : contacts) {
+			for (Contact c : contacts) {
 				if (c.getId() > newID) {
 					newID = c.getId();
 				}
 			}
 			newID++; 
-			contacts.add(new MockContact(newID, name, notes));
+			contacts.add(new ContactImpl(newID, name, notes));
 			
 		}
 				
@@ -63,7 +63,7 @@ public class ContactManagerImpl implements ContactManager{
 	 * @return the Set of all contacts
 	 */
 	
-	public Set<MockContact> getAllContacts() {
+	public Set<Contact> getAllContacts() {
 		return contacts;
 	}
 	
