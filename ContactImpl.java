@@ -61,4 +61,13 @@ public class ContactImpl implements Contact{
 	public String getNotes() {
 		return notes;
 	}
+	
+	/**
+	 * Add notes about the contact.
+	 *
+	 * @param note the notes to be added
+	 */
+	public void addNotes(String note) {
+		
+	}
 }
