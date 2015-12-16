@@ -160,4 +160,9 @@ public class ContactManagerTest {
 	public void testGetContactsWithArrayWhereParamIsNull() {
 		Set<Contact> output = cManagerWithContacts.getContacts();
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetContactsWithArrayWithRepeatedIdValue() {
+		Set<Contact> output = cManagerWithContacts.getContacts(1,2,3,1);
+	}
 }
