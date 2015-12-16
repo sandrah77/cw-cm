@@ -96,7 +96,46 @@ public class ContactManagerImpl implements ContactManager{
 	 * any of the provided IDs does not correspond to a real contact
 	 */
 	public Set<Contact> getContacts(int... ids) throws IllegalArgumentException {
-		return null;
+		if (ids == null || ids.length == 0) {
+			throw new IllegalArgumentException("Must provide at least 1 ID to search for");			
+		}
+		
+		//Check for duplicates in the ids array
+		for (int i = 0; i < ids.length; i++) {
+			for (int j = i+1; j < ids.length; j++)	{
+				if (i!=j && (ids[i] == ids[j])) {
+					throw new IllegalArgumentException("Duplicate Ids provided");
+				}
+			}		
+		}
+		
+		//Check that the contacts with the provided ids exist in the set
+		int numberOfValidIds = 0;
+		for (Contact c : getContacts("")) {
+			for (int i : ids) {
+				if (c.getId() == i) {
+					numberOfValidIds++;
+				}
+			}
+		}
+		if (numberOfValidIds != ids.length) {
+			throw new IllegalArgumentException("One or more of provided IDs does" + 
+												" not correspond to a real contact");
+		}
+		
+		//Create an output set and populate it for return
+		Set <Contact> output = new HashSet<Contact>();
+		
+		for (Contact c : getContacts("")) {
+			for (int i : ids) {
+				if (c.getId() == i) {
+					output.add(c);
+				}
+			}
+		}
+		return output;
+			
+		
 	}
 	
 	/**
