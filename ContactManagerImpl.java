@@ -3,7 +3,8 @@
  *
  * @author ocouls01
  */
-
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Calendar;
@@ -167,6 +168,17 @@ public class ContactManagerImpl implements ContactManager{
 	
 	public Set<Contact> getAllContacts() {
 		return contacts;
+	}
+	
+	/**
+	 * Returns all MockFutureMeetings currently in the List
+	 * for testing
+	 *
+	 * @return the List of all FutureMeetings
+	 */
+	
+	public List<MockFutureMeeting> getAllFutureMeetings() {
+		return null;
 	}
 	
 	
