@@ -115,4 +115,11 @@ public class ContactTest {
 		testContact.addNotes(null);
 		assertEquals(initialNote, testContact.getNotes());
 	}
+	
+	@Test
+	public void testAddNotesWithEmptyStringParam() {
+		String initialNotes = testContact.getNotes();
+		testContact.addNotes("");
+		assertEquals(initialNote, testContact.getNotes());
+	}
 }
