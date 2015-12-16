@@ -17,7 +17,7 @@ public class ContactManagerImpl implements ContactManager{
 	/**
 	 * Create a new contact with the specified name and notes.
 	 * Generates an ID which is returned, based on the IDs of all existing
-	 * contacts. Or 1 if the set of contacts is empty.
+	 * contacts or 1 if the set of contacts is empty.
 	 *
 	 * @param name the name of the contact.
 	 * @param notes notes to be added about the contact.
@@ -43,6 +43,7 @@ public class ContactManagerImpl implements ContactManager{
 			contacts.add(new ContactImpl(newID, name, notes));
 			
 		} else {
+			//Get the highest ID value currently in the set and add 1 for the newID
 			newID = 0;
 			for (Contact c : contacts) {
 				if (c.getId() > newID) {
