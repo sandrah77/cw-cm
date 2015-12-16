@@ -9,15 +9,18 @@ import static org.junit.Assert.*;
 
 public class ContactTest {
 	private Contact testContact;
+	private Contact testContact2Param;
 	
 	@Before
 	public void setUp() {
 		testContact = new ContactImpl(1, "TestName", "TestNotes");
+		testContact2Param = new ContactImpl(2, "TestName2");
 	}
 	
 	@After
 	public void breakDown() {
 		testContact = null;
+		testContact2Param = null;
 	}
 	
 	@Test
@@ -121,5 +124,12 @@ public class ContactTest {
 		String initialNote = testContact.getNotes();
 		testContact.addNotes("");
 		assertEquals(initialNote, testContact.getNotes());
+	}
+	
+	@Test
+	public void testAddNotesToEmptyStringNotes() {
+		String notesToAdd = "New notes";
+		testContact2Param.addNotes(notesToAdd);
+		assertEquals(notesToAdd, testContact2Param.getNotes());
 	}
 }
