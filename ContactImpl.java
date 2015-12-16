@@ -68,6 +68,11 @@ public class ContactImpl implements Contact{
 	 * @param note the notes to be added
 	 */
 	public void addNotes(String note) {
-		notes = notes + "\n\n" + note;
+		if ((note != null) && !(note.equals(""))) {
+			
+			notes = notes + "\n\n" + note;
+						
+		}
+		
 	}
 }
