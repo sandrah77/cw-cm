@@ -29,6 +29,16 @@ public interface ContactManager {
 	 */
 	Set<Contact> getContacts(String name);
 
+	/**
+	 * Returns a list containing the contacts that correspond to the IDs.
+	 * Note that this method can be used to retrieve just one contact by passing only one ID.
+	 *
+	 * @param ids an arbitrary number of contact IDs
+	 * @return a list containing the contacts that correspond to the IDs.
+	 * @throws IllegalArgumentException if no IDs are provided or if
+	 * any of the provided IDs does not correspond to a real contact
+	 */
+	Set<Contact> getContacts(int... ids);
 
 	
 }

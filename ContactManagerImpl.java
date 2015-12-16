@@ -88,6 +88,7 @@ public class ContactManagerImpl implements ContactManager{
 	
 	/**
 	 * Returns all contacts currently in the contacts Set
+	 * For testing
 	 *
 	 * @return the Set of all contacts
 	 */

@@ -43,6 +43,8 @@ public class ContactManagerTest {
 		assertTrue(((ContactManagerImpl) emptyCM).getAllContacts().isEmpty());
 	}
 	
+	//addNewContact() Tests
+	
 	@Test
 	public void testAddNewContact() {
 		emptyCM.addNewContact("TestName", "TestNotes");
@@ -72,6 +74,8 @@ public class ContactManagerTest {
 		emptyCM.addNewContact("TestName", notes);
 	}
 	
+	//getContacts(String) tests
+	
 	@Test
 	public void testGetContactsWithEmptyStringParam() {
 		Set<Contact> allContacts = cManagerWithContacts.getContacts("");
@@ -97,5 +101,63 @@ public class ContactManagerTest {
 	public void testGetContactsWithNullParam() {
 		String input = null;
 		cManagerWithContacts.getContacts(input);
+	}
+	
+	// getContacts(int... ids) tests
+	
+	@Test
+	public void testGetContactsWithArrayWhereContactsExist(){
+		Set<Contact> output = cManagerWithContacts.getContacts(1,2,3,4,5);
+		boolean present = false;
+		
+		for (Contact c : output) {
+			if(c.getName().equals("Sam Wilson")) {
+				present = true;
+			} else if (c.getName().equals("Steve Rogers")) {
+				present = true;
+			} else if (c.getName().equals("Bruce Wayne")) {
+				present = true;
+			} else if (c.getName().equals("Clark Kent")) {
+				present = true;
+			} else if (c.getName().equals("Peter Parker")) {
+				present = true;
+			}
+				
+		}
+	
+		assertTrue(present);
+	}
+	
+	@Test
+	public void testGetContactsWithArrayWhereContactsExistOneContact() {
+		
+		Set<Contact> outputSet = cManagerWithContacts.getContacts(1);
+		assertEquals(1, outputSet.size());
+		Contact expected;
+		for (Contact c : cManagerWithContacts.getContacts("")) {
+			if (c.getName().equals("Sam Wilson")) {
+				expected = c;
+			}
+		}
+		
+		Contact output;
+		for (Contact c : outputSet) {
+			if (c.getId() == 1) {
+				output = c;
+			}
+		}
+		
+		assertEquals(expected, output);
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetContactsWithArrayWhereContactsIdDoesntExist() {
+		Set<Contact> output = cManagerWithContacts.getContacts(11,20);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetContactsWithArrayWhereParamIsNull() {
+		Set<Contact> output = cManagerWithContacts.getContacts();
 	}
 }
