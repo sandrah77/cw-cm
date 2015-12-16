@@ -87,6 +87,19 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
+	 * Returns a list containing the contacts that correspond to the IDs.
+	 * Note that this method can be used to retrieve just one contact by passing only one ID.
+	 *
+	 * @param ids an arbitrary number of contact IDs
+	 * @return a list containing the contacts that correspond to the IDs.
+	 * @throws IllegalArgumentException if no IDs are provided or if
+	 * any of the provided IDs does not correspond to a real contact
+	 */
+	public Set<Contact> getContacts(int... ids) throws IllegalArgumentException {
+		return null;
+	}
+	
+	/**
 	 * Returns all contacts currently in the contacts Set
 	 * For testing
 	 *

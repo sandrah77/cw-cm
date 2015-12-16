@@ -133,14 +133,14 @@ public class ContactManagerTest {
 		
 		Set<Contact> outputSet = cManagerWithContacts.getContacts(1);
 		assertEquals(1, outputSet.size());
-		Contact expected;
+		Contact expected = null;
 		for (Contact c : cManagerWithContacts.getContacts("")) {
 			if (c.getName().equals("Sam Wilson")) {
 				expected = c;
 			}
 		}
 		
-		Contact output;
+		Contact output = null;
 		for (Contact c : outputSet) {
 			if (c.getId() == 1) {
 				output = c;
