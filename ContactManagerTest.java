@@ -28,6 +28,8 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewContact("Wilson Fisk", "Pretty fast for a fat guy");
 		cManagerWithContacts.addNewContact("Slade Wilson", "Not to be confused with a T-800");
 		cManagerWithContacts.addNewContact("Bruce Banner", "Do NOT make him angry");
+		cManagerWithContacts.addNewContact("Matt Murdoch", "That dude is NOT blind");
+		
 		
 	}
 	
