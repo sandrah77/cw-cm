@@ -3,15 +3,21 @@
  *
  * @author ocouls01
  */
-import java.util.Set;
+
 import org.junit.*;
 import static org.junit.Assert.*;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ContactManagerTest {
 	
 	private ContactManager emptyCM;
 	private ContactManager cManagerWithContacts;
-	
+	private Set<Contact> testSet;
+	private Calendar testDate;
 	
 	@Before
 	public void setUp() {
@@ -30,13 +36,21 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewContact("Bruce Banner", "Do NOT make him angry");
 		cManagerWithContacts.addNewContact("Matt Murdoch", "That dude is NOT blind");
 		
+		testSet = cManagerWithContacts.getContacts("Wilson");
+		testDate = new GregorianCalendar(2020, 7, 29, 15, 0);
 		
+				
 	}
 	
+	
+	}
 	@After
 	public void breakDown() {
 		emptyCM = null;
 		cManagerWithContacts = null;
+		testSet = null;
+		testDate = null;
+		randomFutureDates = null;
 	}
 	
 	@Test
@@ -167,4 +181,80 @@ public class ContactManagerTest {
 	public void testGetContactsWithArrayWithRepeatedIdValue() {
 		Set<Contact> output = cManagerWithContacts.getContacts(1,2,3,1);
 	}
+	
+	// addFutureMeeting tests
+	@Test
+	public void testAddFutureMeetingWithNoExistingMeetingsAndExistingContacts() {
+		 
+		//Set of contacts to be used is TestSet, date to be used is testDate
+		int output = cManagerWithContacts.addFutureMeeting(testSet, testDate);
+		assertEquals(1,output);
+		assertEquals(1,((ContactManagerImpl) cManagerWithContacts).getAllFutureMeetings().size());
+	}
+	
+	@Test
+	public void testAddFutureMeetingsMultipleMeetings() {
+		Calendar date1 = new GregorianCalendar(2020, 0, 12, 14, 0);
+		Calendar date2 = new GregorianCalendar(2020, 4, 2, 11, 0);
+		Calendar date3 = new GregorianCalendar(2017, 7, 23, 15, 0);
+		Calendar date4 = new GregorianCalendar(2016, 11, 4, 10, 0);
+		Calendar date5 = new GregorianCalendar(2018, 10, 11, 12, 0);
+		
+		int[] output = new int[5];
+		output[0] = cManagerWithContacts.addFutureMeeting(testSet, date1);
+		output[1] = cManagerWithContacts.addFutureMeeting(testSet, date2);
+		output[2] = cManagerWithContacts.addFutureMeeting(testSet, date3);
+		output[3] = cManagerWithContacts.addFutureMeeting(testSet, date4);
+		output[4] = cManagerWithContacts.addFutureMeeting(testSet, date5);
+		boolean greaterThanZero = true;
+		
+		for (int i : output) {
+			if (output[i] <= 0) {
+				greaterThanZero = false;
+			}
+		}
+		assertTrue(greaterThanZero);
+		
+		boolean different = true;
+		for (int i = 0; i < output.length; i++) {
+			for (int j = i+1; j < output.length; j++) {
+				if (i!=j && output[i]== output[j]) {
+					different = false;
+				}
+			}
+		}
+		assertTrue(different);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddFutureMeetingWithNoExistingMeetingsAndContactsWhichDontExist() {
+		Contact hank = new ContactImpl(100,"Hank MacCoy");
+		Contact scott = new ContactImpl(101, "Scott Summers");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(hank);
+		contacts.add(scott);
+		
+		int output = cManagerWithContacts.addFutureMeeting(contacts, testDate);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddFutureMeetingWithPastDate() {
+		Calendar pastDate = new GregorianCalendar(2014, 3, 15, 12, 30);		
+		cManagerWithContacts.addFutureMeeting(testSet, pastDate);
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testAddFutureMeetingWithNullDate() {
+		cManagerWithContacts.addFutureMeeting(testSet, null);
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testAddFutureMeetingWithNullSetOfContacts() {
+		cManagerWithContacts.addFutureMeeting(null, testDate);
+	} 
+	
+	
+	
+	
+	
 }
