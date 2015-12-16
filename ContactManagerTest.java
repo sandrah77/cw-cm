@@ -43,14 +43,13 @@ public class ContactManagerTest {
 	}
 	
 	
-	}
 	@After
 	public void breakDown() {
 		emptyCM = null;
 		cManagerWithContacts = null;
 		testSet = null;
 		testDate = null;
-		randomFutureDates = null;
+		
 	}
 	
 	@Test
