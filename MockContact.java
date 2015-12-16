@@ -1,4 +1,10 @@
-public class MockContact {
+/**
+ * A mock class for the Contact interface
+ *
+ * @author ocouls01
+ */
+
+public class MockContact implements Contact {
 	private int ID;
 	private String name;
 	private String notes;
@@ -20,5 +26,7 @@ public class MockContact {
 	public String getNotes() {
 		return notes;
 	}
+	
+	public void addNotes(String note) {}
 	
 }

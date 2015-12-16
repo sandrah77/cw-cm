@@ -207,7 +207,7 @@ public class ContactManagerTest {
 		output[4] = cManagerWithContacts.addFutureMeeting(testSet, date5);
 		boolean greaterThanZero = true;
 		
-		for (int i : output) {
+		for (int i = 0; i < output.length; i++) {
 			if (output[i] <= 0) {
 				greaterThanZero = false;
 			}

@@ -8,13 +8,21 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ContactManagerImpl implements ContactManager{
 	private Set<Contact> contacts;
+	private List<Meeting> meetings;
+	private Calendar presentDate;
 	
 	public ContactManagerImpl() {
 		//This set of contacts will need to be imported from a file
 		contacts = new HashSet<Contact>();
+		
+		//This list will need to be read from file
+		meetings = new ArrayList<Meeting>();
+		
+		presentDate = new GregorianCalendar();
 	}
 	
 	/**
@@ -30,8 +38,41 @@ public class ContactManagerImpl implements ContactManager{
 	 * in the past, of if any contact is unknown / non-existent.
 	 * @throws NullPointerException if the meeting or the date are null
 	 */
-	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		return 0;
+	public int addFutureMeeting(Set<Contact> contacts, Calendar date) throws NullPointerException {
+		//Check that all contacts are known
+		int validContacts = 0;
+		for (Contact c : this.contacts) {
+			for (Contact c2 : contacts) {
+				if ((c.getId() == c2.getId()) && (c.getName().equals(c2.getName()))) {
+					validContacts ++;
+				}
+			}	
+		}
+			
+		if ((date == null) || (contacts == null)) {
+			throw new NullPointerException("Provide a set of contacts and a Calendar date");
+		// if date.compareTo(presentDate) is negative, then date is before presentDate
+		} else if (date.compareTo(presentDate) < 0) {
+			throw new IllegalArgumentException("Date provided is in the past, must be a future date");
+		} else if (validContacts != contacts.size()) {
+			throw new IllegalArgumentException("One or more of specified contacts is unknown");
+		} else if (meetings.isEmpty()){
+				meetings.add(new MockFutureMeeting(1, date, contacts));
+				return 1;
+		} else {
+			//Get the highest ID value currently in the set and add 1 for the newID
+			
+			//put in private method - repeated code
+			int newID = 0;
+			for (Meeting m : meetings) {
+				if (m.getId() > newID) {
+					newID = m.getId();
+				}
+			}
+			newID++;
+			meetings.add(new MockFutureMeeting(newID, date, contacts));
+			return newID;
+		}		
 	}
 	
 	/**
@@ -177,8 +218,15 @@ public class ContactManagerImpl implements ContactManager{
 	 * @return the List of all FutureMeetings
 	 */
 	
-	public List<MockFutureMeeting> getAllFutureMeetings() {
-		return null;
+	public List<FutureMeeting> getAllFutureMeetings() {
+		List<FutureMeeting> output = new ArrayList<FutureMeeting>();
+		
+		for (Meeting m : meetings) {
+			if (m instanceof FutureMeeting) {
+				output.add((FutureMeeting) m);
+			} 
+		}
+		return output;
 	}
 	
 	
