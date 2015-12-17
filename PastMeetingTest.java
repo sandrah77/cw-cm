@@ -37,7 +37,7 @@ public class PastMeetingTest {
 	
 	@Test
 	public void testConstruction() {
-		PastMeeting output = new PastMeetingImpl(1, testPastDate, testSet);
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, testSet, "Test notes");
 		assertNotNull(output);
 		
 		assertEquals(1, output.getId());
@@ -50,29 +50,34 @@ public class PastMeetingTest {
 	public void testConstructionWithEmptySetOfContacts() {
 		Set<Contact> emptySet = new HashSet<Contact>();
 		
-		PastMeeting output = new PastMeetingImpl(1, testPastDate, emptySet);
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, emptySet, "Test notes");
 	}
 	
 	@Test (expected = IllegalArgumentException.class) 
 	public void testConstructionWithIdOfZero() {
 				
-		PastMeeting output = new PastMeetingImpl(0, testPastDate, testSet);
+		PastMeeting output = new PastMeetingImpl(0, testPastDate, testSet, "Test notes");
 	}
 	
 	@Test (expected = IllegalArgumentException.class) 
 	public void testConstructionWithNegativeId() {
 				
-		PastMeeting output = new PastMeetingImpl(-2, testPastDate, testSet);
+		PastMeeting output = new PastMeetingImpl(-2, testPastDate, testSet, "Test notes");
 	}
 	
 		
 	@Test (expected = NullPointerException.class) 
 	public void testContstructionWithNullDate() {
-		PastMeeting output = new PastMeetingImpl(1, null, testSet);
+		PastMeeting output = new PastMeetingImpl(1, null, testSet, "Test notes");
 	}
 	
 	@Test (expected = NullPointerException.class) 
 	public void testContstructionWithNullContacts() {
-		PastMeeting output = new PastMeetingImpl(1, testPastDate, null);
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, null, "Test notes");
+	}
+	
+	@Test (expected = NullPointerException.class) 
+	public void testContstructionWithNullNotes() {
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, testSet, null);
 	}
 }
