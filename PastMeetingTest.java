@@ -45,4 +45,34 @@ public class PastMeetingTest {
 		assertEquals(testSet, output.getContacts());
 		
 	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithEmptySetOfContacts() {
+		Set<Contact> emptySet = new HashSet<Contact>();
+		
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, emptySet);
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithIdOfZero() {
+				
+		PastMeeting output = new PastMeetingImpl(0, testPastDate, testSet);
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithNegativeId() {
+				
+		PastMeeting output = new PastMeetingImpl(-2, testPastDate, testSet);
+	}
+	
+		
+	@Test (expected = NullPointerException.class) 
+	public void testContstructionWithNullDate() {
+		PastMeeting output = new PastMeetingImpl(1, null, testSet);
+	}
+	
+	@Test (expected = NullPointerException.class) 
+	public void testContstructionWithNullContacts() {
+		PastMeeting output = new PastMeetingImpl(1, testPastDate, null);
+	}
 }
