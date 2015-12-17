@@ -1,15 +1,37 @@
 
-1
-3) Add getMeeting to ContactManager
+- Add getPastMeeting to CM
 
-4) Add getFutureMeetingList
+- Add getMeeting to ContactManager
 
-5) Add getMeetingListOn
+- Add getFutureMeetingList
 
-6) Create meeting impl abstract class and then FutureMeetingImpl to replace MockFutureMeeting
+- Add getMeetingListOn
+
+- add getPastMeetingListFor
+
+- add addMeetingNotes
+
+
+Flush
+
+Investigate I/O options for saving data to file.
+
+
+Construction
+
+Make the fields for the set of contacts and the list of meetings take their data from file 
+
+
+Write a script to test use of the whole thing
+
 
 
 	
 
+Optional Extras:
 
-ONCE FUTUREMEETINGIMPL AND PASTMEETINGIMPL ARE DONE WILL NEED TO REPLACE REFERENCES TO MOCK OBJECTS
+Add means of changing all futureMeetings which have passed in time to pastmeetings, 
+possibly adding notes, or an empty string. 
+
+A list of all meetings that have been through this process could be added as an extra field
+so that user has access to them to add notes later.
