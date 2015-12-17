@@ -115,7 +115,7 @@ public class ContactManagerImpl implements ContactManager{
 	 * @param date the date on which the meeting took place
 	 * @param text messages to be added about the meeting.
 	 * @throws IllegalArgumentException if the list of contacts is
-	 * empty, or any of the contacts does not exist
+	 * empty, or any of the contacts does not exist, or if the date is in the future.
 	 *
 	 * @throws NullPointerException if any of the arguments is null
 	 */
