@@ -86,7 +86,26 @@ public class ContactManagerImpl implements ContactManager{
 	 * in the past
 	 */
 	public FutureMeeting getFutureMeeting(int id) {
-		return null;
+		Meeting holderMeeting = null;
+		FutureMeeting output = null;
+		for (Meeting m : meetings) {
+			if (m.getId() == id) {
+				holderMeeting = m;
+			}
+		}
+		if (holderMeeting != null) {
+			if (holderMeeting instanceof PastMeeting) {
+				throw new IllegalArgumentException("Meeting with specified ID is a past meeting");
+			} else if (holderMeeting instanceof FutureMeeting) {
+				output = (FutureMeeting) holderMeeting;
+				return output;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	
 	}
 	
 	/**
@@ -108,7 +127,7 @@ public class ContactManagerImpl implements ContactManager{
 		
 		if (meetings.isEmpty()){
 				meetings.add(new MockPastMeeting(1, date, contacts, text));
-				return 1;
+				
 		} else {
 			//Get the highest ID value currently in the set and add 1 for the newID
 			
@@ -120,8 +139,8 @@ public class ContactManagerImpl implements ContactManager{
 				}
 			}
 			newID++;
-			meetings.add(new MockPastMeeting(newID, date, contacts, notes));
-			return newID;
+			meetings.add(new MockPastMeeting(newID, date, contacts, text));
+			
 		}
 	}
 	

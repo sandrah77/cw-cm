@@ -17,7 +17,7 @@ public class MockPastMeeting implements PastMeeting {
 	
 	
 	public MockPastMeeting(int ID, Calendar date, Set<Contact> contacts, String notes) {
-		this.ID = id;
+		this.ID = ID;
 		this.date = date;
 		this.contacts = contacts;
 		this.notes = notes;

@@ -257,9 +257,9 @@ public class ContactManagerTest {
 	
 	@Test
 	public void testGetFutureMeetingWhichExists() {
-		int futureMeetingID = emptyCM.addFutureMeeting(testSet, testDate);
+		int futureMeetingID = cManagerWithContacts.addFutureMeeting(testSet, testDate);
 		
-		FutureMeeting output = emptyCM.getFutureMeeting(futureMeetingID);
+		FutureMeeting output = cManagerWithContacts.getFutureMeeting(futureMeetingID);
 		assertNotNull(output);
 		assertEquals(futureMeetingID, output.getId()); 
 		
