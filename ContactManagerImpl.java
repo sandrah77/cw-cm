@@ -53,12 +53,12 @@ public class ContactManagerImpl implements ContactManager{
 			throw new IllegalArgumentException("One or more of specified contacts is unknown");
 		} else if (meetings.isEmpty()){
 			
-				//Will need to change Mock objects to real objects
-				meetings.add(new MockFutureMeeting(1, date, contacts));
+				
+				meetings.add(new FutureMeetingImpl(1, date, contacts));
 				return 1;
 		} else {
 			int newID = generateNewMeetingID();
-			meetings.add(new MockFutureMeeting(newID, date, contacts));
+			meetings.add(new FutureMeetingImpl(newID, date, contacts));
 			return newID;
 		}		
 	}
@@ -122,12 +122,12 @@ public class ContactManagerImpl implements ContactManager{
 		} else if (getNumberOfValidContacts(contacts) != contacts.size()) {
 			throw new IllegalArgumentException("One or more of specified contacts is unknown");
 		} else if (meetings.isEmpty()){
-				meetings.add(new MockPastMeeting(1, date, contacts, text));
+				meetings.add(new PastMeetingImpl(1, date, contacts, text));
 				
 		} else {
 			int newID = generateNewMeetingID();
 			
-			meetings.add(new MockPastMeeting(newID, date, contacts, text));
+			meetings.add(new PastMeetingImpl(newID, date, contacts, text));
 			
 		}
 	}
