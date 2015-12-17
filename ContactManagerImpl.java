@@ -47,6 +47,8 @@ public class ContactManagerImpl implements ContactManager{
 		// if date.compareTo(presentDate) is negative, then date is before presentDate
 		} else if (date.compareTo(presentDate) < 0) {
 			throw new IllegalArgumentException("Date provided is in the past, must be a future date");
+		} else if (contacts.size() == 0) {
+			throw new IllegalArgumentException("Must provide at least 1 contact");
 		} else if (getNumberOfValidContacts(contacts) != contacts.size()) {
 			throw new IllegalArgumentException("One or more of specified contacts is unknown");
 		} else if (meetings.isEmpty()){
