@@ -7,9 +7,14 @@ import java.util.Set;
  * @author ocouls01
  */
 public abstract class MeetingImpl implements Meeting {
-	
+	private int ID;
+	private Calendar date;
+	private Set<Contact> contacts;
+
 	public MeetingImpl(int ID, Calendar date, Set<Contact> contacts) {
-		
+		this.ID = ID;
+		this.date = date;
+		this.contacts = contacts;
 	}	
 	/**
 	 * Returns the id of the meeting.
@@ -17,7 +22,7 @@ public abstract class MeetingImpl implements Meeting {
 	 * @return the id of the meeting.
  	 */
 	public int getId() {
-		return 0;
+		return ID;
 	}
 	/**
 	 * Return the date of the meeting.
@@ -25,7 +30,7 @@ public abstract class MeetingImpl implements Meeting {
 	 * @return the date of the meeting.
 	 */
 	public Calendar getDate() {
-		return null;
+		return date;
 	}
 	
 	/**
@@ -38,6 +43,6 @@ public abstract class MeetingImpl implements Meeting {
 	 * @return the details of people that attended the meeting.
 	 */
 	public Set<Contact> getContacts() {
-		return null;
+		return contacts;
 	}
 }
