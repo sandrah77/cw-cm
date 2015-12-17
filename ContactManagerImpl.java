@@ -72,7 +72,7 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalArgumentException if there is a meeting with that ID happening
 	 * in the past
 	 */
-	public FutureMeeting getFutureMeeting(int id) {
+	public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException {
 		Meeting holderMeeting = null;
 		FutureMeeting output = null;
 		for (Meeting m : meetings) {
@@ -106,7 +106,8 @@ public class ContactManagerImpl implements ContactManager{
 	 *
 	 * @throws NullPointerException if any of the arguments is null
 	 */
-	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) throws IllegalArgumentException,
+																							NullPointerException{
 			
 		//Will need to change Mock objects for real ones
 		
