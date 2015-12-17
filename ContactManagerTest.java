@@ -244,6 +244,8 @@ public class ContactManagerTest {
 		cManagerWithContacts.addFutureMeeting(testSet, testPastDate);
 	}
 	
+	
+	
 	@Test (expected = NullPointerException.class)
 	public void testAddFutureMeetingWithNullDate() {
 		cManagerWithContacts.addFutureMeeting(testSet, null);

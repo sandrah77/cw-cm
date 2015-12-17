@@ -38,23 +38,16 @@ public class ContactManagerImpl implements ContactManager{
 	 * in the past, of if any contact is unknown / non-existent.
 	 * @throws NullPointerException if the meeting or the date are null
 	 */
-	public int addFutureMeeting(Set<Contact> contacts, Calendar date) throws NullPointerException {
+	public int addFutureMeeting(Set<Contact> contacts, Calendar date) throws NullPointerException,
+																			IllegalArgumentException {
 		//Check that all contacts are known
-		int validContacts = 0;
-		for (Contact c : this.contacts) {
-			for (Contact c2 : contacts) {
-				if ((c.getId() == c2.getId()) && (c.getName().equals(c2.getName()))) {
-					validContacts ++;
-				}
-			}	
-		}
-			
+					
 		if ((date == null) || (contacts == null)) {
 			throw new NullPointerException("Provide a set of contacts and a Calendar date");
 		// if date.compareTo(presentDate) is negative, then date is before presentDate
 		} else if (date.compareTo(presentDate) < 0) {
 			throw new IllegalArgumentException("Date provided is in the past, must be a future date");
-		} else if (validContacts != contacts.size()) {
+		} else if (getNumberOfValidContacts(contacts) != contacts.size()) {
 			throw new IllegalArgumentException("One or more of specified contacts is unknown");
 		} else if (meetings.isEmpty()){
 			
@@ -62,20 +55,12 @@ public class ContactManagerImpl implements ContactManager{
 				meetings.add(new MockFutureMeeting(1, date, contacts));
 				return 1;
 		} else {
-			//Get the highest ID value currently in the set and add 1 for the newID
-			
-			//put in private method - repeated code
-			int newID = 0;
-			for (Meeting m : meetings) {
-				if (m.getId() > newID) {
-					newID = m.getId();
-				}
-			}
-			newID++;
+			int newID = generateNewMeetingID();
 			meetings.add(new MockFutureMeeting(newID, date, contacts));
 			return newID;
 		}		
 	}
+	
 	
 	/**
 	 * Returns the FUTURE meeting with the requested ID, or null if there is none.
@@ -110,35 +95,35 @@ public class ContactManagerImpl implements ContactManager{
 	
 	/**
  	 * Create a new record for a meeting that took place in the past.
-	 *
+	 * 
 	 * @param contacts a list of participants
 	 * @param date the date on which the meeting took place
-	 * @param text messages to be added about the meeting.
+	 * @param text messages to be added about the meeting, can be an empty String
 	 * @throws IllegalArgumentException if the list of contacts is
 	 * empty, or any of the contacts does not exist, or if the date is in the future.
 	 *
 	 * @throws NullPointerException if any of the arguments is null
 	 */
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		
+			
 		//Will need to change Mock objects for real ones
 		
-		//Will need to add checks for exceptions
-		
-		if (meetings.isEmpty()){
+		if ((date == null) || (contacts == null) || (text == null)) {
+			throw new NullPointerException("Provide a set of contacts, a Calendar date" +
+																" and notes about the meeting");
+		// if date.compareTo(presentDate) is negative, then date is before presentDate
+		} else if (date.compareTo(presentDate) > 0) {
+			throw new IllegalArgumentException("Date provided is in the future, must be a past date");
+		} else if (contacts.size() == 0) {
+			throw new IllegalArgumentException("Must provide at least 1 contact");
+		} else if (getNumberOfValidContacts(contacts) != contacts.size()) {
+			throw new IllegalArgumentException("One or more of specified contacts is unknown");
+		} else if (meetings.isEmpty()){
 				meetings.add(new MockPastMeeting(1, date, contacts, text));
 				
 		} else {
-			//Get the highest ID value currently in the set and add 1 for the newID
+			int newID = generateNewMeetingID();
 			
-			//put in private method - repeated code
-			int newID = 0;
-			for (Meeting m : meetings) {
-				if (m.getId() > newID) {
-					newID = m.getId();
-				}
-			}
-			newID++;
 			meetings.add(new MockPastMeeting(newID, date, contacts, text));
 			
 		}
@@ -310,4 +295,32 @@ public class ContactManagerImpl implements ContactManager{
 		return meetings;
 	}
 	
+
+	//Get the highest ID value currently in the set and add 1 for the newID
+	
+	private int generateNewMeetingID() {
+		
+		int newID = 0;
+		for (Meeting m : meetings) {
+			if (m.getId() > newID) {
+				newID = m.getId();
+			}
+		}
+		newID++;
+		return newID;
+	}
+	
+	//Compare each contact given to the set of contacts in this Contact Manager
+	
+	private int getNumberOfValidContacts(Set<Contact> contacts) {
+		int validContacts = 0;
+		for (Contact c : this.contacts) {
+			for (Contact c2 : contacts) {
+				if ((c.getId() == c2.getId()) && (c.getName().equals(c2.getName()))) {
+					validContacts ++;
+				}
+			}	
+		}
+		return validContacts;
+	}
 }
