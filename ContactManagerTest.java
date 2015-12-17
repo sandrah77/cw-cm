@@ -292,4 +292,8 @@ public class ContactManagerTest {
 		
 		
 	}
+	
+	//addNewPastMeeting tests
+	
+	
 }
