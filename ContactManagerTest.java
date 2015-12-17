@@ -244,7 +244,12 @@ public class ContactManagerTest {
 		cManagerWithContacts.addFutureMeeting(testSet, testPastDate);
 	}
 	
-	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddFutureMeetingEmptyContactsSet() {
+		Set<Contact> emptySet = new HashSet<Contact>();
+		
+		cManagerWithContacts.addFutureMeeting(emptySet, testFutureDate);
+	}
 	
 	@Test (expected = NullPointerException.class)
 	public void testAddFutureMeetingWithNullDate() {
