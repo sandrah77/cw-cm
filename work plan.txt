@@ -1,18 +1,14 @@
 
-1) 
-
-2) Add getFutureMeeting to ContactManager
-	Create MockPastMeeting object to aid testing
-
+1
 3) Add getMeeting to ContactManager
 
 4) Add getFutureMeetingList
 
-5) Addget MeetingListOn
+5) Add getMeetingListOn
 
 6) Create meeting impl abstract class and then FutureMeetingImpl to replace MockFutureMeeting
 
-7) Add addNewPastMeeting method for ContactManager
+
 	
 
 
