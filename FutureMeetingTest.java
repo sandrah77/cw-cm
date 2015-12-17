@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 
 
 public class FutureMeetingTest {
-	private FutureMeeting testFutureMeeting;
+	
 	private Calendar testFutureDate;
 	private Set<Contact> testSet;
 	
@@ -26,7 +26,7 @@ public class FutureMeetingTest {
 		testSet.add(new ContactImpl(3, "Richard Feynman"));
 		
 		testFutureDate = new GregorianCalendar(2020, 5, 13, 13, 0);
-		testFutureMeeting = new FutureMeetingImpl(29, testFutureDate, testSet);
+		
 		
 	}
 	
@@ -34,7 +34,7 @@ public class FutureMeetingTest {
 	public void breakDown() {
 		testFutureDate = null;
 		testSet = null;
-		testFutureMeeting = null;
+		
 		
 	}
 	
@@ -48,4 +48,35 @@ public class FutureMeetingTest {
 		assertEquals(testSet, output.getContacts());
 		
 	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithEmptySetOfContacts() {
+		Set<Contact> emptySet = new HashSet<Contact>();
+		
+		FutureMeeting output = new FutureMeetingImpl(1, testFutureDate, emptySet);
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithIdOfZero() {
+				
+		FutureMeeting output = new FutureMeetingImpl(0, testFutureDate, testSet);
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testConstructionWithNegativeId() {
+				
+		FutureMeeting output = new FutureMeetingImpl(-2, testFutureDate, testSet);
+	}
+	
+		
+	@Test (expected = NullPointerException.class) 
+	public void testContstructionWithNullDate() {
+		FutureMeeting output = new FutureMeetingImpl(1, null, testSet);
+	}
+	
+	@Test (expected = NullPointerException.class) 
+	public void testContstructionWithNullContacts() {
+		FutureMeeting output = new FutureMeetingImpl(1, testFutureDate, null);
+	}
+	
 }
