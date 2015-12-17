@@ -40,7 +40,7 @@ public class FutureMeetingTest {
 	
 	@Test
 	public void testConstruction() {
-		FutureMeeting output = new FutureMeeting(1, testFutureDate, testSet);
+		FutureMeeting output = new FutureMeetingImpl(1, testFutureDate, testSet);
 		assertNotNull(output);
 		
 		assertEquals(1, output.getId());
