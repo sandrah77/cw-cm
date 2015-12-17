@@ -253,7 +253,43 @@ public class ContactManagerTest {
 	} 
 	
 	
+	// getFutureMeeting Tests
 	
+	@Test
+	public void testGetFutureMeetingWhichExists() {
+		int futureMeetingID = addFutureMeeting(testSet, testDate);
+		
+		FutureMeeting output = getFutureMeeting(futureMeetingID);
+		assertNotNull(output);
+		assertEquals(futureMeetingID, output.getId()); 
+		
+		Set<Contact> outputSet = output.getContacts();
+		Calendar outputDate = output.getDate();
+		
+		assertTrue(outputSet.equals(testSet));
+		
+		assertTrue(outputDate.equals(testDate));
+		
+		assertEquals(0, outputDate.compareTo(testDate));
+	}
 	
+	@Test
+	public void testGetFutureMeetingWhichDoesntExist() {
+		FutureMeeting output = emptyCM.getFutureMeeting(1);
+		
+		assertNull(output);
+		
+	}
 	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testGetFutureMeetingWithIdForMeetingInThePast() {
+		Calendar pastDate = new GregorianCalendar(2014, 10, 21);
+		emptyCM.addNewPastMeeting(testSet, pastDate, "Past meeting test");
+		
+		int pastID = ((ContactManagerImpl) emptyCM).getAllMeetings().get(0).getId();
+		
+		emptyCM.getFutureMeeting(pastID);
+		
+		
+	}
 }

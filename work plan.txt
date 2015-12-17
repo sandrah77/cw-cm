@@ -1,10 +1,19 @@
-Work plan:
 
-1) Start contact manager interface, initially building the 'addNewContact' method
-	a) build mock contact object
+1) 
 
-2) Start Contact interface
+2) Add getFutureMeeting to ContactManager
+	Create MockPastMeeting object to aid testing
 
-3) Complete the getContacts method in ContactManager
+3) Add getMeeting to ContactManager
 
-4) Move on to the Meeting methods in ContactManager
+4) Add getFutureMeetingList
+
+5) Addget MeetingListOn
+
+6) Create meeting impl abstract class and then FutureMeetingImpl to replace MockFutureMeeting
+
+7) Add addNewPastMeeting method for ContactManager
+	
+
+5) 
+ 
