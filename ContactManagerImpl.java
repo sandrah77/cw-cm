@@ -76,6 +76,33 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
+	 * Returns the FUTURE meeting with the requested ID, or null if there is none.
+	 *
+	 * @param id the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 * @throws IllegalArgumentException if there is a meeting with that ID happening
+	 * in the past
+	 */
+	public FutureMeeting getFutureMeeting(int id) {
+		return null;
+	}
+	
+	/**
+ 	 * Create a new record for a meeting that took place in the past.
+	 *
+	 * @param contacts a list of participants
+	 * @param date the date on which the meeting took place
+	 * @param text messages to be added about the meeting.
+	 * @throws IllegalArgumentException if the list of contacts is
+	 * empty, or any of the contacts does not exist
+	 *
+	 * @throws NullPointerException if any of the arguments is null
+	 */
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+		
+	}
+	
+	/**
 	 * Create a new contact with the specified name and notes.
 	 * Generates an ID which is returned, based on the IDs of all existing
 	 * contacts or 1 if the set of contacts is empty.
@@ -212,7 +239,7 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
-	 * Returns all MockFutureMeetings currently in the List
+	 * Returns all FutureMeetings currently in the List
 	 * for testing
 	 *
 	 * @return the List of all FutureMeetings
@@ -229,5 +256,16 @@ public class ContactManagerImpl implements ContactManager{
 		return output;
 	}
 	
+	
+	/**
+	 * Returns all Meetings currently in the List
+	 * for testing
+	 *
+	 * @return the List of all Meetings
+	 */
+	
+	public List<Meeting> getAllMeetings() {
+		return null;
+	}
 	
 }
