@@ -1,5 +1,5 @@
 
-- Add getPastMeeting to CM
+
 
 - Add getMeeting to ContactManager
 

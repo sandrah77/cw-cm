@@ -62,34 +62,7 @@ public class ContactManagerImpl implements ContactManager{
 			return newID;
 		}		
 	}
-	
-	
-	/**
-	 * Returns the FUTURE meeting with the requested ID, or null if there is none.
-	 *
-	 * @param id the ID for the meeting
-	 * @return the meeting with the requested ID, or null if it there is none.
-	 * @throws IllegalArgumentException if there is a meeting with that ID happening
-	 * in the past
-	 */
-	public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException {
 		
-		
-		for (Meeting m : meetings) {
-			if (m.getId() == id) {
-				if (m instanceof PastMeeting) {
-					throw new IllegalArgumentException("Meeting with specified ID is a past meeting");
-				} else {
-					return (FutureMeeting) m;
-				}
-				
-			}
-		}
-		return null;
-		
-	
-	}
-	
 	/**
 	 * Returns the PAST meeting with the requested ID, or null if it there is none.
 	 *
@@ -111,6 +84,40 @@ public class ContactManagerImpl implements ContactManager{
 				}
 			}  
 		}
+		return null;
+	}
+	
+	/**
+	 * Returns the FUTURE meeting with the requested ID, or null if there is none.
+	 *
+	 * @param id the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 * @throws IllegalArgumentException if there is a meeting with that ID happening
+	 * in the past
+	 */
+	public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException {
+		
+		for (Meeting m : meetings) {
+			if (m.getId() == id) {
+				if (m instanceof PastMeeting) {
+					throw new IllegalArgumentException("Meeting with specified ID is a past meeting");
+				} else {
+					return (FutureMeeting) m;
+				}
+				
+			}
+		}
+		return null;
+	
+	}
+	
+	/**
+	 * Returns the meeting with the requested ID, or null if it there is none.
+	 *
+	 * @param id the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 */
+	public Meeting getMeeting(int id) {
 		return null;
 	}
 	

@@ -424,7 +424,39 @@ public class ContactManagerTest {
 		cManagerWithContacts.getPastMeeting(id);
 	}
 	
+	
+	// getMeeting tests
+	
+	@Test
+	public void testGetMeetingWithExistingFutureMeeting() {
+		int id = cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
 		
+		FutureMeeting fm = cManagerWithContacts.getFutureMeeting(id);
+		
+		Meeting meeting = cManagerWithContacts.getMeeting(id);
+		
+		assertEquals(fm, meeting);
+		assertEquals((Meeting) fm, meeting);
+		
+	}
+	
+	@Test
+	public void testGetMeetingWithExistingPastMeeting() {
+		
+		cManagerWithContacts.addNewPastMeeting(testSet, testPastDate, "Past meeting");
+		PastMeeting pm = ((ContactManagerImpl) cManagerWithContacts).getAllPastMeetings().get(0);
+		int id = pm.getId();
+		
+		
+		assertEquals(pm, cManagerWithContacts.getMeeting(id));
+		assertEquals((Meeting) pm, cManagerWithContacts.getMeeting(id));
+	}
+	
+	@Test
+	public void testGetMeetingWhereIdDoesntExist() {
+		assertNull(cManagerWithContacts.getMeeting(33));
+	}
+	
 	
 	
 }

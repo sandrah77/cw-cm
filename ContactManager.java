@@ -47,6 +47,14 @@ public interface ContactManager {
 	FutureMeeting getFutureMeeting(int id);
 	
 	/**
+	 * Returns the meeting with the requested ID, or null if it there is none.
+	 *
+	 * @param id the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 */
+	Meeting getMeeting(int id);
+	
+	/**
  	 * Create a new record for a meeting that took place in the past.
 	 *
 	 * @param contacts a list of participants
