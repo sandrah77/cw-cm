@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Collections;
 
 public class ContactManagerImpl implements ContactManager{
 	private Set<Contact> contacts;
@@ -139,7 +140,40 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws NullPointerException if the contact is null
 	 */
 	public List<Meeting> getFutureMeetingList(Contact contact) { 
-		return null;
+		boolean validContact = false;
+		for (Contact c : contacts) {
+			if (c.equals(contact)) {
+				validContact = true;
+			}
+		}
+		
+		if (contact == null) {
+			throw new NullPointerException("Must provide a contact to search for");
+		} else if (!validContact) {
+			throw new IllegalArgumentException("Contact provided does not exist in this manager");
+		} else {
+			List<Meeting> sortedOutput = new ArrayList<Meeting>();
+		
+			//Make the unsorted list a set to avoid duplicates
+			Set<Meeting> unsortedOutput = new HashSet<Meeting>();
+			for (Meeting m : meetings) {
+				if ((m instanceof FutureMeeting) && (m.getContacts().contains(contact))) {
+					unsortedOutput.add(m);
+				}
+			}
+			//Move them to a list
+			for (Meeting m : unsortedOutput){
+				sortedOutput.add(m);
+			}
+			
+			//Use a lambda expression to compare the elements in the sort function.
+			
+			Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
+			return sortedOutput;
+		}
+		
+		
+		
 	}
 	
 	/**
