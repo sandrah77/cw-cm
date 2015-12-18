@@ -18,6 +18,8 @@ public class ContactManagerTest {
 	private ContactManager emptyCM;
 	private ContactManager cManagerWithContacts;
 	private Set<Contact> testSet;
+	private Set<Contact> testSet2;
+	private Set<Contact> testSet3;
 	private Calendar testFutureDate;
 	private Calendar testPastDate;
 	
@@ -39,6 +41,10 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewContact("Matt Murdoch", "That dude is NOT blind");
 		
 		testSet = cManagerWithContacts.getContacts("Wilson");
+		testSet2 = cManagerWithContacts.getContacts("Bruce");
+		testSet3 = cManagerWithContacts.getContacts(1,4,5);
+		
+		
 		testFutureDate = new GregorianCalendar(2020, 7, 29, 15, 0);
 		testPastDate = new GregorianCalendar(2014, 10, 21);
 		
@@ -51,8 +57,10 @@ public class ContactManagerTest {
 		emptyCM = null;
 		cManagerWithContacts = null;
 		testSet = null;
+		testSet2 = null;
+		testSet3 = null;
 		testFutureDate = null;
-		
+		testPastDate = null;
 	}
 	
 	@Test
@@ -549,5 +557,86 @@ public class ContactManagerTest {
 	public void testGetFutureMeetingListWhereContactIsNull() {
 		cManagerWithContacts.getFutureMeetingList(null);
 	}
+	
+	// getMeetingListOn tests
+	
+	@Test
+	public void testGetMeetingListOnForFutureWhereOneExists() {
+		cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
+		
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(testFutureDate);
+		
+		assertNotNull(output);
+		assertEquals(1, output.size());
+		assertEquals(testSet, output.get(0).getContacts());
+		
+	}
+	
+	@Test
+	public void testGetMeetingListOnForPastWhereOneExists() {
+		cManagerWithContacts.addNewPastMeeting(testSet, testPastDate, "Notes");
+		
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(testPastDate);
+		
+		assertNotNull(output);
+		assertEquals(1, output.size());
+		assertEquals(testSet, output.get(0).getContacts());
+		
+	}
+	
+	@Test
+	public void testGetMeetingListOnForFutureWhereManyExist() {
+		//Check Chronology
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 3, 13, 13, 30));
+		cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 3, 13, 14, 30));
+		cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2020, 3, 13, 10, 30));
+		
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2020, 3, 13));
+		
+		assertNotNull(output);
+		assertEquals(3, output.size());
+		
+		int difference = output.get(0).getDate().compareTo(output.get(1).getDate());
+		assertTrue(difference <= 0);
+		
+		difference = output.get(1).getDate().compareTo(output.get(2).getDate());
+		assertTrue(difference <= 0);
+		
+	}
+	
+	@Test
+	public void testGetMeetingListOnForPastWhereManyExist() {
+		//Check Chronology
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 13, 30), "notes1");
+		cManagerWithContacts.addNewPastMeeting(testSet2, new GregorianCalendar(2012, 3, 13, 14, 30), "notes2");
+		cManagerWithContacts.addNewPastMeeting(testSet3, new GregorianCalendar(2012, 3, 13, 10, 30), "notes3");
+		
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2012, 3, 13));
+		
+		assertNotNull(output);
+		assertEquals(3, output.size());
+		
+		int difference = output.get(0).getDate().compareTo(output.get(1).getDate());
+		assertTrue(difference >= 0);
+		
+		difference = output.get(1).getDate().compareTo(output.get(2).getDate());
+		assertTrue(difference >= 0);
+	}	
+	
+	@Test
+	public void testGetMeetingListOnWhereNoneExist() {
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2014, 3,12));
+		
+		assertNull(output);
+		
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testGetMeetingListOnWhereDateIsNull() {
+		cManagerWithContacts.getMeetingListOn(null);
+	}
+	
+	
+	
 	
 }

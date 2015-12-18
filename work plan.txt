@@ -1,9 +1,8 @@
 
 
 
-- Add getMeeting to ContactManager
 
-- Add getFutureMeetingList
+
 
 - Add getMeetingListOn
 
