@@ -176,7 +176,7 @@ public class ContactManagerImpl implements ContactManager{
 	
 	/**
 	 * Returns the list of meetings that are scheduled for, or that took
-	 * place on, the specified date
+	 * place on, the specified date (i.e. day)
 	 *
 	 * If there are none, the returned list will be empty. Otherwise,
 	 * the list will be chronologically sorted and will not contain any
