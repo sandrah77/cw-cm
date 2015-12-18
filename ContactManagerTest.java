@@ -183,6 +183,16 @@ public class ContactManagerTest {
 		Set<Contact> output = cManagerWithContacts.getContacts(1,2,3,1);
 	}
 	
+	// Have implmemented it that null param returns illegal argument exception,
+	// but this could be used instead.
+	/* @Test (expected = NullPointerException.class)
+	public void testGetContactsWithArrayWithNullArray() {
+		int[] ids = null;
+		Set<Contact> output = cManagerWithContacts.getContacts(ids);
+	} */
+	
+	
+	
 	// addFutureMeeting tests
 	@Test
 	public void testAddFutureMeetingWithNoExistingMeetingsAndExistingContacts() {
@@ -359,6 +369,61 @@ public class ContactManagerTest {
 	}
 	
 	
+	// getPastMeeting tests
+	
+	@Test
+	public void testGetPastMeetingWhereOnlyOneExists() {
+		cManagerWithContacts.addNewPastMeeting(testSet, testPastDate, "Past meeting");
+		PastMeeting pm = ((ContactManagerImpl) cManagerWithContacts).getAllPastMeetings().get(0);
+		int id = pm.getId();
+		
+		assertEquals(pm, cManagerWithContacts.getPastMeeting(id));
+	
+	}	
+	
+	@Test
+	public void testGetPastMeetingWhereManyExist() {
+		Calendar date1 = new GregorianCalendar(2014, 8, 13);
+		Calendar date2 = new GregorianCalendar(2014, 3, 12);
+		Calendar date3 = new GregorianCalendar(2013, 5, 9);
+		
+		Set<Contact> set1 = cManagerWithContacts.getContacts("");
+		Set<Contact> set2 = cManagerWithContacts.getContacts("Bruce");
+		Set<Contact> set3 = cManagerWithContacts.getContacts("o");
+		
+		cManagerWithContacts.addNewPastMeeting(set1, date1, "One");
+		cManagerWithContacts.addNewPastMeeting(set2, date2, "Two");
+		cManagerWithContacts.addNewPastMeeting(set3, date3, "Three");
+		
+		List<PastMeeting> meetings = ((ContactManagerImpl) cManagerWithContacts).getAllPastMeetings();
+		
+		PastMeeting pm1 = null;
+		int id1 = 0;
+	
+		
+		for (PastMeeting m : meetings) {
+			if (m.getNotes().equals("One")) {
+				pm1 = m;
+				id1 = m.getId();
+			} 
+		}
+
+		assertEquals(pm1, cManagerWithContacts.getPastMeeting(id1));
+	}
+	
+	@Test
+	public void testGetPastMeetingWhereNoneExist() {
+		assertNull(cManagerWithContacts.getPastMeeting(12));
+	}
+	
+	@Test (expected = IllegalStateException.class) 
+	public void testGetPastMeetingWhereIdRefersToFutureMeeting() {
+		int id = cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
+		
+		cManagerWithContacts.getPastMeeting(id);
+	}
+	
+		
 	
 	
 }

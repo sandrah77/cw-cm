@@ -96,6 +96,20 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
+	 * Returns the PAST meeting with the requested ID, or null if it there is none.
+	 *
+	 * The meeting must have happened at a past date.
+	 *
+	 * @param id the ID for the meeting
+	 * @return the meeting with the requested ID, or null if it there is none.
+	 * @throws IllegalStateException if there is a meeting with that ID happening
+	 * in the future
+	 */
+	public PastMeeting getPastMeeting(int id) {
+		return null;
+	}
+	
+	/**
  	 * Create a new record for a meeting that took place in the past.
 	 * 
 	 * @param contacts a list of participants
