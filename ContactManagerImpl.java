@@ -73,25 +73,20 @@ public class ContactManagerImpl implements ContactManager{
 	 * in the past
 	 */
 	public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException {
-		Meeting holderMeeting = null;
-		FutureMeeting output = null;
+		
+		
 		for (Meeting m : meetings) {
 			if (m.getId() == id) {
-				holderMeeting = m;
+				if (m instanceof PastMeeting) {
+					throw new IllegalArgumentException("Meeting with specified ID is a past meeting");
+				} else {
+					return (FutureMeeting) m;
+				}
+				
 			}
 		}
-		if (holderMeeting != null) {
-			if (holderMeeting instanceof PastMeeting) {
-				throw new IllegalArgumentException("Meeting with specified ID is a past meeting");
-			} else if (holderMeeting instanceof FutureMeeting) {
-				output = (FutureMeeting) holderMeeting;
-				return output;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return null;
+		
 	
 	}
 	
@@ -105,7 +100,17 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalStateException if there is a meeting with that ID happening
 	 * in the future
 	 */
-	public PastMeeting getPastMeeting(int id) {
+	public PastMeeting getPastMeeting(int id) throws IllegalStateException{
+				
+		for (Meeting m : meetings) {
+			if (m.getId() == id) {
+				if (m instanceof FutureMeeting) {
+					throw new IllegalStateException("Specified ID refers to a FutureMeeting");
+				} else {
+					return (PastMeeting) m;
+				}
+			}  
+		}
 		return null;
 	}
 	
