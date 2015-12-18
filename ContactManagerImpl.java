@@ -300,6 +300,23 @@ public class ContactManagerImpl implements ContactManager{
 		return output;
 	}
 	
+	/**
+	 * Returns all PastMeetings currently in the List
+	 * for testing
+	 *
+	 * @return the List of all PastMeeting
+	 */
+	
+	public List<PastMeeting> getAllPastMeetings() {
+		List<PastMeeting> output = new ArrayList<PastMeeting>();
+		
+		for (Meeting m : meetings) {
+			if (m instanceof PastMeeting) {
+				output.add((PastMeeting) m);
+			} 
+		}
+		return output;
+	}
 	
 	/**
 	 * Returns all Meetings currently in the List
@@ -311,6 +328,8 @@ public class ContactManagerImpl implements ContactManager{
 	public List<Meeting> getAllMeetings() {
 		return meetings;
 	}
+	
+	
 	
 
 	//Get the highest ID value currently in the set and add 1 for the newID
