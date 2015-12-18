@@ -139,7 +139,8 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalArgumentException if the contact does not exist
 	 * @throws NullPointerException if the contact is null
 	 */
-	public List<Meeting> getFutureMeetingList(Contact contact) { 
+	public List<Meeting> getFutureMeetingList(Contact contact) throws NullPointerException, 
+																	IllegalArgumentException { 
 		boolean validContact = false;
 		for (Contact c : contacts) {
 			if (c.equals(contact)) {
@@ -185,8 +186,31 @@ public class ContactManagerImpl implements ContactManager{
 	 * @return the list of meetings
 	 * @throws NullPointerException if the date are null
 	 */
-	public List<Meeting> getMeetingListOn(Calendar date) {
-		return null;
+	public List<Meeting> getMeetingListOn(Calendar date) throws NullPointerException {
+		if (date == null) {
+			throw new NullPointerException("Must provide a date to search for");
+		}
+		
+		List<Meeting> sortedOutput = new ArrayList<Meeting>();
+		Set<Meeting> unsortedOutput = new HashSet<Meeting>();
+		for (Meeting m : meetings) {
+			//May be some issues here
+			if (date.get(Calendar.ERA) == m.getDate().get(Calendar.ERA) &&
+                date.get(Calendar.YEAR) == m.getDate().get(Calendar.YEAR) &&
+                date.get(Calendar.DAY_OF_YEAR) == m.getDate().get(Calendar.DAY_OF_YEAR)) {
+				unsortedOutput.add(m);
+			}
+		}
+		for (Meeting m : unsortedOutput) {
+			sortedOutput.add(m);
+		}
+		if (date.compareTo(presentDate) < 0) {
+			Collections.sort(sortedOutput, (a,b) -> b.getDate().compareTo(a.getDate()));
+		} else {
+			Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
+		}
+		
+		return sortedOutput;
 	}
 
 	

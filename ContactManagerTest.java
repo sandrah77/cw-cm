@@ -562,9 +562,9 @@ public class ContactManagerTest {
 	
 	@Test
 	public void testGetMeetingListOnForFutureWhereOneExists() {
-		cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2029, 1, 1, 12, 0));
 		
-		List<Meeting> output = cManagerWithContacts.getMeetingListOn(testFutureDate);
+		List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2029, 1, 1));
 		
 		assertNotNull(output);
 		assertEquals(1, output.size());
@@ -627,7 +627,7 @@ public class ContactManagerTest {
 	public void testGetMeetingListOnWhereNoneExist() {
 		List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2014, 3,12));
 		
-		assertNull(output);
+		assertTrue(output.isEmpty());
 		
 	}
 	
