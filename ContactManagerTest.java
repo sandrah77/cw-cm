@@ -458,5 +458,96 @@ public class ContactManagerTest {
 	}
 	
 	
+	// getFutureMeetingList tests
+		
+	@Test
+	public void testGetFutureMeetingListWhereOneExists() {
+		cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
+		
+		Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
+		Contact deadpool = null;
+		for (Contact c : wadeSet) {
+			if (c.getName().equals("Wade Wilson")) {
+				deadpool = c;
+			}
+		}
+		
+		List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
+		assertNotNull(fmList);
+		assertEquals(1, fmList.size());
+		assertEquals(testSet, fmList.get(0).getContacts());
+	}
+	
+	@Test
+	public void testGetFutureMeetingListWhereManyExist() {
+		
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 11, 5));
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 1, 3));
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13));
+		
+		Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
+		Contact deadpool = null;
+		for (Contact c : wadeSet) {
+			if (c.getName().equals("Wade Wilson")) {
+				deadpool = c;
+			}
+		}
+		
+		List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
+		assertNotNull(fmList);
+		assertEquals(3, fmList.size());
+		assertEquals(testSet, fmList.get(0).getContacts());		
+	}
+		
+	@Test
+	public void testGetFutureMeetingListWhereNoneExist() {
+		Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
+		Contact deadpool = null;
+		for (Contact c : wadeSet) {
+			if (c.getName().equals("Wade Wilson")) {
+				deadpool = c;
+			}
+		}
+				
+		assertTrue(cManagerWithContacts.getFutureMeetingList(deadpool).isEmpty());
+	}
+	
+	@Test
+	public void testChronologicalOrderOfGetFutureMeetingList() {
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 11, 5));
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 1, 3));
+		cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13));
+		
+		Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
+		Contact deadpool = null;
+		for (Contact c : wadeSet) {
+			if (c.getName().equals("Wade Wilson")) {
+				deadpool = c;
+			}
+		}
+		List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
+		
+		//First in the list will be the soonest to now, so second in the list should
+		//be after. If so, these ints will be negative
+		
+		int difference = fmList.get(0).getDate().compareTo(fmList.get(1).getDate());
+		assertTrue(difference < 0);
+		
+		difference = fmList.get(1).getDate().compareTo(fmList.get(2).getDate());
+		assertTrue(difference < 0);
+		
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetFutureMeetingListWhereContactDoesntExist() {
+		cManagerWithContacts.getFutureMeetingList(new ContactImpl(64, "Donald Blake", 
+												"Speaks like he is in a Shakespeare play"));
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testGetFutureMeetingListWhereContactIsNull() {
+		cManagerWithContacts.getFutureMeetingList(null);
+	}
 	
 }
