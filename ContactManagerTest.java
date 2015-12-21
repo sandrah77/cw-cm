@@ -718,4 +718,74 @@ public class ContactManagerTest {
 		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(null);
 	}
 	
+	// addMeetingNotes tests
+	
+	@Test
+	public void testAddMeetingNotesChangeFutureMeetingToPastMeeting() {
+		//add some future meetings
+		int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 3, 13, 13, 30));
+		int id2 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 14, 10, 30));
+		int id3 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2018, 1, 12, 9, 30));
+		
+		//change the 'now' time so these meetings are now in the pastID
+		((ContactManagerImpl) cManagerWithContacts).changeCurrentTimeToFuture();
+		
+		assertTrue(cManagerWithContacts.getMeeting(id1) instanceof FutureMeeting);
+		assertTrue(cManagerWithContacts.getMeeting(id2) instanceof FutureMeeting);
+		assertTrue(cManagerWithContacts.getMeeting(id3) instanceof FutureMeeting);
+		
+		//add the notes and check that they are now past meetings etc.
+		cManagerWithContacts.addMeetingNotes(id1, "Test Notes 1");
+		cManagerWithContacts.addMeetingNotes(id2, "Test Notes 2");
+		cManagerWithContacts.addMeetingNotes(id3, "Test Notes 3");
+		
+		assertTrue(cManagerWithContacts.getMeeting(id1) instanceof PastMeeting);
+		assertTrue(cManagerWithContacts.getMeeting(id2) instanceof PastMeeting);
+		assertTrue(cManagerWithContacts.getMeeting(id3) instanceof PastMeeting);
+		
+		assertNotNull(cManagerWithContacts.getPastMeeting(id1));
+		assertNotNull(cManagerWithContacts.getPastMeeting(id2));
+		assertNotNull(cManagerWithContacts.getPastMeeting(id3));
+		
+		assertEquals("Test Notes 1", cManagerWithContacts.getPastMeeting(id1).getNotes());
+		assertEquals("Test Notes 2", cManagerWithContacts.getPastMeeting(id2).getNotes());
+		assertEquals("Test Notes 3", cManagerWithContacts.getPastMeeting(id3).getNotes());
+	}
+	
+	@Test
+	public void testAddMeetingNotesToExistingPastMeeting() {
+		//add a past meeting with empty notes
+		cManagerWithContacts.addNewPastMeeting(testSet2, testPastDate, "");
+		
+		assertTrue(cManagerWithContacts.getPastMeeting(1).getNotes() == "");
+		assertTrue(cManagerWithContacts.getPastMeeting(1).getDate() == testPastDate);
+		
+		//add some notes to it.
+		PastMeeting pm = cManagerWithContacts.addMeetingNotes(1, "Test Notes");
+		
+		assertTrue(cManagerWithContacts.getPastMeeting(1).getNotes() == "Test Notes");
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddMeetingNotesWhereMeetingDoesntExist() {
+		PastMeeting pm = cManagerWithContacts.addMeetingNotes(100, "fail");
+	}
+	
+	@Test (expected = IllegalStateException.class)
+	public void testAddMeetingNotesWhereMeetingIsAFutureDate() {
+		int id = cManagerWithContacts.addFutureMeeting(testSet, testFutureDate);
+		PastMeeting pm = cManagerWithContacts.addMeetingNotes(id, "Fail");
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void testAddMeetingNotesWhereNotesAreNull() {
+		int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 3, 13, 13, 30));
+		
+		((ContactManagerImpl) cManagerWithContacts).changeCurrentTimeToFuture();
+		
+		PastMeeting pm = cManagerWithContacts.addMeetingNotes(id1, null);
+	}
+	
+	
 }
