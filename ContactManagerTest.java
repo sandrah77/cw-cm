@@ -13,6 +13,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 
 public class ContactManagerTest {
 	
@@ -796,10 +801,71 @@ public class ContactManagerTest {
 		assertTrue(new File("." + File.separator + "contacts.txt").exists());
 	}
 	
-	// @Test
-	// public void testFlushSendsContactsAndMeetingsToContactsTxt() {
+	@Test
+	public void testFlushSendsContactsAndMeetingsToContactsTxt() {
+		int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 3, 12, 10, 30));
+		int id2 = cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2018, 5, 14, 8, 0));
+		int id3 = cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 1, 22, 14, 0));
+		cManagerWithContacts.addNewPastMeeting(testSet2, new GregorianCalendar(2012, 11, 24, 14, 30), "");
+		cManagerWithContacts.addNewPastMeeting(testSet3, new GregorianCalendar(2011, 6, 13, 8, 0), "");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2011, 8, 29, 16, 0), "");
 		
-	// }
+		cManagerWithContacts.flush();
+		File contactsFile = new File("." + File.separator + "contacts.txt");
+		List<Meeting> meetings = null;
+        Set<Contact> contacts = null;
+		try (ObjectInputStream
+                     input = new ObjectInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(contactsFile)));) {
+            
+			
+			Object o = input.readObject();
+            if(o instanceof List) {
+				meetings = (List<Meeting>) o;
+			} else if (o instanceof Set) {
+				contacts = (Set<Contact>) o;
+			}
+			
+			o = input.readObject();
+            if (meetings == null) {
+				meetings = (List<Meeting>) o;
+			} else {
+				contacts = (Set<Contact>) o;
+			}
+			
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		
+		assertTrue(meetings.size() == 6);
+		assertTrue(contacts.size() == 11);
+		
+		FutureMeeting fm1 = cManagerWithContacts.getFutureMeeting(id1);
+		FutureMeeting fm2 = cManagerWithContacts.getFutureMeeting(id2);
+		FutureMeeting fm3 = cManagerWithContacts.getFutureMeeting(id3);
+		
+		Meeting newFM1 = null;
+		Meeting newFM2 = null;
+		Meeting newFM3 = null;
+		
+		for (Meeting m : meetings) {
+			if (m.getId() == id1) {
+				newFM1 = m;
+			} else if (m.getId() == id2) {
+				newFM2 = m;
+			} else if (m.getId() == id3) {
+				newFM3 = m;
+			}
+		}
+		
+		assertEquals(fm1, newFM1);
+		assertEquals(fm2, newFM2);
+		assertEquals(fm3, newFM3);
+
+	}
 	
 	// @Test
 	// public void testFlush() {
