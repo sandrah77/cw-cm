@@ -636,7 +636,84 @@ public class ContactManagerTest {
 		cManagerWithContacts.getMeetingListOn(null);
 	}
 	
+	// getPastMeetingListFor tests
 	
+	@Test
+	public void testGetPastMeetingListForWhereMeetingsExistWithThatContact() {
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 13, 30), "one");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 14, 30), "two");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
+		
+		Contact testContact = null;
+		for (Contact c : testSet) {
+			if (c.getName() == "Wilson") {
+				testContact = c;
+			}
+		}
+		
+		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(testContact);
+		
+		assertNotNull(output);
+		assertEquals(3, output.size());
+		assertEquals(testSet, output.get(0).getContacts());
+		assertEquals(testSet, output.get(1).getContacts());
+		assertEquals(testSet, output.get(2).getContacts());
+		
+		
+	}
 	
+	@Test
+	public void testGetPastMeetingListForWhereNoMeetingsExistWithThatContact() {
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 13, 30), "one");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 14, 30), "two");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
+	
+		Contact testContact = null;
+			for (Contact c : testSet) {
+				if (c.getName() == "Bruce Wayne") {
+					testContact = c;
+				}
+			}
+			
+		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(testContact);
+		
+		assertTrue(output.isEmpty());
+	}
+	
+	@Test
+	public void testGetPastMeetingListForChronologicalOrdering() {
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 13, 30), "one");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 14, 30), "two");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
+		
+		Contact testContact = null;
+		for (Contact c : testSet) {
+			if (c.getName() == "Wilson") {
+				testContact = c;
+			}
+		}
+		
+		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(testContact);
+		
+		assertTrue(cManagerWithContacts.getPastMeeting(0).getNotes() == "three");
+		assertTrue(cManagerWithContacts.getPastMeeting(1).getNotes() == "one");
+		assertTrue(cManagerWithContacts.getPastMeeting(2).getNotes() == "two");
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void testGetPastMeetingListForWhereContactDoesntExist() {
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 13, 30), "one");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 14, 30), "two");
+		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
+		
+		Contact dave = new Contact(100, "Dave", "Hello Dave");
+		
+		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(dave);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testGetPastMeetingListForWhereContactIsNull() {
+		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(null);
+	}
 	
 }
