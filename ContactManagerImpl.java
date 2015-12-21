@@ -225,7 +225,42 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalArgumentException if the contact does not exist
 	 * @throws NullPointerException if the contact is null
 	 */
-	List<PastMeeting> getPastMeetingListFor(Contact contact);
+	public List<PastMeeting> getPastMeetingListFor(Contact contact) throws IllegalArgumentException, NullPointerException {
+		List<PastMeeting> sortedOutput = new ArrayList<PastMeeting>();
+		Set<PastMeeting> unsortedOutput = new HashSet<PastMeeting>();
+		//Check valid contact
+		boolean valid = false;
+		for (Contact c : contacts) {
+			if (c.equals(contact)) {
+				valid = true;
+			}
+		}
+		
+		if (contact == null) {
+			throw new NullPointerException("Must provide a contact to search for");
+		} else if (!valid) {
+			throw new IllegalArgumentException("Specified contact does not exist in this ContactManager");
+		} else if (getAllPastMeetings().isEmpty()) {
+			return sortedOutput;
+		} else {
+			for(PastMeeting pm : getAllPastMeetings()) {
+				if (pm.getContacts().contains(contact)) {
+					unsortedOutput.add(pm);
+				}
+			}
+			if (unsortedOutput.isEmpty()) {
+				return sortedOutput;
+			} else {
+				for (PastMeeting pm : unsortedOutput) {
+					sortedOutput.add(pm);
+				}
+		
+			Collections.sort(sortedOutput, (a,b) -> b.getDate().compareTo(a.getDate()));
+			
+			return sortedOutput;
+			}
+		}
+	}
 	
 	/**
  	 * Create a new record for a meeting that took place in the past.

@@ -669,7 +669,7 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
 	
 		Contact testContact = null;
-			for (Contact c : testSet) {
+			for (Contact c : cManagerWithContacts.getContacts("")) {
 				if (c.getName() == "Bruce Wayne") {
 					testContact = c;
 				}
@@ -687,7 +687,7 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
 		
 		Contact testContact = null;
-		for (Contact c : testSet) {
+		for (Contact c : cManagerWithContacts.getContacts("")) {
 			if (c.getName() == "Wilson") {
 				testContact = c;
 			}
@@ -695,9 +695,11 @@ public class ContactManagerTest {
 		
 		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(testContact);
 		
-		assertTrue(cManagerWithContacts.getPastMeeting(0).getNotes() == "three");
-		assertTrue(cManagerWithContacts.getPastMeeting(1).getNotes() == "one");
-		assertTrue(cManagerWithContacts.getPastMeeting(2).getNotes() == "two");
+		assertEquals(3, output.size());
+		assertTrue(output.get(0).getNotes() == "two");
+		assertTrue(output.get(1).getNotes() == "one");
+		assertTrue(output.get(2).getNotes() == "three");
+		
 	}
 	
 	@Test (expected = IllegalArgumentException.class) 
@@ -706,7 +708,7 @@ public class ContactManagerTest {
 		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 14, 30), "two");
 		cManagerWithContacts.addNewPastMeeting(testSet, new GregorianCalendar(2012, 3, 13, 10, 30), "three");
 		
-		Contact dave = new Contact(100, "Dave", "Hello Dave");
+		Contact dave = new ContactImpl(100, "Dave", "Hello Dave");
 		
 		List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(dave);
 	}
