@@ -1,17 +1,5 @@
 
-
-
-
-
-
-
-
-- add getPastMeetingListFor
-
-- add addMeetingNotes
-
-
-Flush
+- add Flush
 
 Investigate I/O options for saving data to file.
 

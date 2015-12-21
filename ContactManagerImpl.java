@@ -313,8 +313,49 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws IllegalStateException if the meeting is set for a date in the future
 	 * @throws NullPointerException if the notes are null
 	 */
-	public PastMeeting addMeetingNotes(int id, String text) {
-		return null;
+	public PastMeeting addMeetingNotes(int id, String text) throws NullPointerException,
+															IllegalArgumentException,
+															IllegalStateException{
+		if (text == null) {
+			throw new NullPointerException("Must provide a String of notes");
+		}
+		
+		boolean IdExists = false;
+		List<Meeting> all = getAllMeetings();
+		for (Meeting m : all) {
+			if (m.getId() == id) {
+				IdExists = true;
+			}
+		}
+		if (!IdExists) {
+			throw new IllegalArgumentException("Meeting with this ID doesn't exist");
+		}
+		Meeting temp = getMeeting(id);
+		
+		if (temp.getDate().compareTo(presentDate) > 0) {
+			throw new IllegalStateException("Meeting with this ID has not occurred yet");
+		}
+		//Remove the meeting in question from the meetings list and store it in the thisMeeting
+		//variable
+		int meetingIndex = meetings.indexOf(temp);
+		Meeting thisMeeting = meetings.remove(meetingIndex);
+			
+		PastMeeting output = null;
+		
+		if (thisMeeting instanceof FutureMeeting) {
+			output = new PastMeetingImpl(thisMeeting.getId(), thisMeeting.getDate(), thisMeeting.getContacts(), text);
+		} else if (thisMeeting instanceof PastMeeting) {
+			if (((PastMeeting) thisMeeting).getNotes().length() == 0) {
+				output = new PastMeetingImpl(thisMeeting.getId(), thisMeeting.getDate(), thisMeeting.getContacts(), text);
+			} else {
+				text = "\n\n" + text;
+				output = new PastMeetingImpl(thisMeeting.getId(), thisMeeting.getDate(), thisMeeting.getContacts(), text);
+			}
+		}
+		
+		meetings.add(output);
+		return output;
+		
 	}
 	
 	/**
@@ -506,7 +547,7 @@ public class ContactManagerImpl implements ContactManager{
 	 *
 	 */
 	public void changeCurrentTimeToFuture() {
-		
+		presentDate = new GregorianCalendar(2050, 1, 1);
 	}
  	
 	
