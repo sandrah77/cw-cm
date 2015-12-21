@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
 
 public class ContactManagerImpl implements ContactManager{
 	private Set<Contact> contacts;
@@ -484,6 +486,72 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	/**
+	 * Save all data to disk.
+	 *
+	 * This method must be executed when the program is
+	 * closed and when/if the user requests it.
+	 */
+	public void flush() {
+		final String FILENAME = "contacts.txt";
+		
+		File outputFile = new File("." + File.separator + FILENAME);
+		
+		//hold whether the createNewFile method actually created a new file or found one
+		boolean newFile;
+		try{
+			newFile = outputFile.createNewFile();
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	//Private Methods to avoid repetition of code
+	
+	//Get the highest ID value currently in the set and add 1 for the newID
+	
+	private int generateNewMeetingID() {
+		
+		int newID = 0;
+		for (Meeting m : meetings) {
+			if (m.getId() > newID) {
+				newID = m.getId();
+			}
+		}
+		newID++;
+		return newID;
+	}
+	
+	//Compare each contact given to the set of contacts in this Contact Manager
+	
+	private int getNumberOfValidContacts(Set<Contact> contacts) {
+		int validContacts = 0;
+		for (Contact c : this.contacts) {
+			for (Contact c2 : contacts) {
+				if ((c.getId() == c2.getId()) && (c.getName().equals(c2.getName()))) {
+					validContacts ++;
+				}
+			}	
+		}
+		return validContacts;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//Extra Methods for testing
+	
+	/**
 	 * Returns all contacts currently in the contacts Set
 	 * For testing
 	 *
@@ -553,31 +621,5 @@ public class ContactManagerImpl implements ContactManager{
 	
 	
 
-	//Get the highest ID value currently in the set and add 1 for the newID
 	
-	private int generateNewMeetingID() {
-		
-		int newID = 0;
-		for (Meeting m : meetings) {
-			if (m.getId() > newID) {
-				newID = m.getId();
-			}
-		}
-		newID++;
-		return newID;
-	}
-	
-	//Compare each contact given to the set of contacts in this Contact Manager
-	
-	private int getNumberOfValidContacts(Set<Contact> contacts) {
-		int validContacts = 0;
-		for (Contact c : this.contacts) {
-			for (Contact c2 : contacts) {
-				if ((c.getId() == c2.getId()) && (c.getName().equals(c2.getName()))) {
-					validContacts ++;
-				}
-			}	
-		}
-		return validContacts;
-	}
 }
