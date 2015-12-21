@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.io.File;
 
 public class ContactManagerTest {
 	
@@ -786,6 +787,24 @@ public class ContactManagerTest {
 		
 		PastMeeting pm = cManagerWithContacts.addMeetingNotes(id1, null);
 	}
+	
+	// flush tests
+	@Test
+	public void testFlushCreatesNewContactsTxtFileWhenThereIsNone() {
+		
+		cManagerWithContacts.flush();
+		assertTrue(new File("." + File.separator + "contacts.txt").exists());
+	}
+	
+	// @Test
+	// public void testFlushSendsContactsAndMeetingsToContactsTxt() {
+		
+	// }
+	
+	// @Test
+	// public void testFlush() {
+		
+	// }
 	
 	
 }
