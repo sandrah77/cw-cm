@@ -67,12 +67,50 @@ public class ContactManagerTest {
 		testSet3 = null;
 		testFutureDate = null;
 		testPastDate = null;
+		
+		File contacts = new File("." + File.separator + "contacts.txt");
+		contacts.delete();
+	}
+	
+	// Construction tests
+	
+	@Test
+	public void testContstructionIgnoringIO() {
+		assertNotNull(emptyCM);
+		assertTrue(((ContactManagerImpl) emptyCM).getAllContacts().isEmpty());
 	}
 	
 	@Test
-	public void testContstruction() {
-		assertNotNull(emptyCM);
-		assertTrue(((ContactManagerImpl) emptyCM).getAllContacts().isEmpty());
+	public void testContstructionWithInputFromFile() {
+		int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 3, 12, 10, 30));
+		int id2 = cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2018, 5, 14, 8, 0));
+		int id3 = cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 1, 22, 14, 0));
+		
+		cManagerWithContacts.flush();
+		
+		ContactManager newCM = new ContactManagerImpl();
+		
+		assertEquals(cManagerWithContacts.getMeeting(1).getId(), newCM.getMeeting(1).getId());
+		assertEquals(cManagerWithContacts.getMeeting(2).getId(), newCM.getMeeting(2).getId());
+		
+		
+		Contact c1 = null;
+		Contact newC1 = null;
+		
+		for (Contact c : cManagerWithContacts.getContacts("")) {
+			if (c.getId() == 1) {
+				c1 = c;
+			}
+		}
+		
+		for (Contact c : newCM.getContacts("")) {
+			if (c.getId() == 1) {
+				newC1 = c;
+			}
+		}
+		
+		assertEquals(c1.getId(), newC1.getId());
+	
 	}
 	
 	//addNewContact() Tests
@@ -309,6 +347,7 @@ public class ContactManagerTest {
 	
 	@Test
 	public void testGetFutureMeetingWhichDoesntExist() {
+		ContactManager blankCM = new ContactManagerImpl();
 		FutureMeeting output = emptyCM.getFutureMeeting(1);
 		
 		assertNull(output);
@@ -871,12 +910,12 @@ public class ContactManagerTest {
 		assertTrue(newFM3.getId() == id3);
 		
 		
-	}
-	
-	// @Test
-	// public void testFlush() {
+		contactsFile.delete();
 		
-	// }
+	}
+
+	
+
 	
 	
 }

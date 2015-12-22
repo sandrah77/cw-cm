@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Collections;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -19,20 +20,58 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.nio.file.*;
 import static java.nio.file.StandardCopyOption.*;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
 
 public class ContactManagerImpl implements ContactManager{
 	private Set<Contact> contacts;
 	private List<Meeting> meetings;
 	private Calendar presentDate;
+	private static final String FILENAME = "contacts.txt";
+	private static final String BACKUP = "backup.txt";
 	
-	public ContactManagerImpl() {
-		//This set of contacts will need to be imported from a file
-		contacts = new HashSet<Contact>();
-		
-		//This list will need to be read from file
-		meetings = new ArrayList<Meeting>();
-		
+	
+	public ContactManagerImpl(){
+		//Set the date to be used by other methods as the 'present' time
 		presentDate = new GregorianCalendar();
+		
+		File contactFile = new File("." + File.separator + FILENAME);
+		
+		if (!contactFile.exists()) {
+			contacts = new HashSet<Contact>();
+			meetings = new ArrayList<Meeting>();
+		} else {
+			try(ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(contactFile)));) {
+						
+				Object o = input.readObject();
+				if (o instanceof List) {
+					meetings = (List<Meeting>) o;
+				} else {
+					contacts = (Set<Contact>) o;
+				}
+				
+				o = input.readObject();
+				if (o instanceof List) {
+					meetings = (List<Meeting>) o;
+				} else {
+					contacts = (Set<Contact>) o;
+				}
+			} catch(IOException ex) {
+				System.err.println("Problem with write");
+				ex.printStackTrace();
+			} catch(ClassNotFoundException ex) {
+				System.err.println("Problem with write");
+				ex.printStackTrace();
+			}
+		}
+		
+	
+		
+		
+		
+		
 	}
 	
 	/**
@@ -499,24 +538,29 @@ public class ContactManagerImpl implements ContactManager{
 	 * closed and when/if the user requests it.
 	 */
 	public void flush() {
-		final String FILENAME = "contacts.txt";
 		
 		File outputFile = new File("." + File.separator + FILENAME);
 		
+		
 		//Create a backup copy of current contacts.txt before deletion
-		File temp = new File("." + File.separator + "temp.txt");
-		Path source = Paths.get("." + File.separator + FILENAME);
-		Path target = Paths.get("." + File.separator + "temp.txt");
-		try {
-			temp.createNewFile();
+		File backup = new File("." + File.separator + BACKUP);
+		
+		if(outputFile.exists()) {
+			Path source = Paths.get("." + File.separator + FILENAME);
+			Path target = Paths.get("." + File.separator + BACKUP);
 			try {
-				Files.copy(source, target, REPLACE_EXISTING);
+				backup.createNewFile();
+				try {
+					Files.copy(source, target, REPLACE_EXISTING);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		} catch (IOException ex) {
 			ex.printStackTrace();
+			}
 		}
+		
+		
 		
 		//Now delete the existing contacts.txt and output current objects
 		// to a new one.
@@ -526,14 +570,14 @@ public class ContactManagerImpl implements ContactManager{
 		} catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		
+		boolean success = false;
 		try(ObjectOutputStream output = new ObjectOutputStream(
 					new BufferedOutputStream(
 					new FileOutputStream(outputFile)));) {
 			
 			output.writeObject(this.contacts);
 			output.writeObject(this.meetings);
-		
+			success = true;
 		} catch(NotSerializableException ex) {
 			ex.printStackTrace();
 		} catch(InvalidClassException ex) {
@@ -542,13 +586,15 @@ public class ContactManagerImpl implements ContactManager{
 			ex.printStackTrace();
 		}
 		
-		//delete the temporary file
-		try{
-			temp.delete();
-			
-		} catch(IOException ex) {
-			ex.printStackTrace();
+		//delete the backup file if the previous part has not been interrupted
+		
+		if (success && backup.exists()) {
+			backup.delete();
 		}
+		
+			
+		
+		
 		
 	}
 	
