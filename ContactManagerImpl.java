@@ -12,6 +12,13 @@ import java.util.GregorianCalendar;
 import java.util.Collections;
 import java.io.File;
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.NotSerializableException;
+import java.io.ObjectOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.nio.file.*;
+import static java.nio.file.StandardCopyOption.*;
 
 public class ContactManagerImpl implements ContactManager{
 	private Set<Contact> contacts;
@@ -496,14 +503,52 @@ public class ContactManagerImpl implements ContactManager{
 		
 		File outputFile = new File("." + File.separator + FILENAME);
 		
-		//hold whether the createNewFile method actually created a new file or found one
-		boolean newFile;
+		//Create a backup copy of current contacts.txt before deletion
+		File temp = new File("." + File.separator + "temp.txt");
+		Path source = Paths.get("." + File.separator + FILENAME);
+		Path target = Paths.get("." + File.separator + "temp.txt");
+		try {
+			temp.createNewFile();
+			try {
+				Files.copy(source, target, REPLACE_EXISTING);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		//Now delete the existing contacts.txt and output current objects
+		// to a new one.
 		try{
-			newFile = outputFile.createNewFile();
+			outputFile.delete();
+			outputFile.createNewFile();
 		} catch(IOException ex) {
 			ex.printStackTrace();
 		}
 		
+		try(ObjectOutputStream output = new ObjectOutputStream(
+					new BufferedOutputStream(
+					new FileOutputStream(outputFile)));) {
+			
+			output.writeObject(this.contacts);
+			output.writeObject(this.meetings);
+		
+		} catch(NotSerializableException ex) {
+			ex.printStackTrace();
+		} catch(InvalidClassException ex) {
+			ex.printStackTrace();
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		//delete the temporary file
+		try{
+			temp.delete();
+			
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
 		
 	}
 	

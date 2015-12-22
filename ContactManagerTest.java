@@ -842,7 +842,9 @@ public class ContactManagerTest {
 		
 		assertTrue(meetings.size() == 6);
 		assertTrue(contacts.size() == 11);
-		
+	
+		// Check if the new meetings list contains the above meetings
+
 		FutureMeeting fm1 = cManagerWithContacts.getFutureMeeting(id1);
 		FutureMeeting fm2 = cManagerWithContacts.getFutureMeeting(id2);
 		FutureMeeting fm3 = cManagerWithContacts.getFutureMeeting(id3);
@@ -860,11 +862,15 @@ public class ContactManagerTest {
 				newFM3 = m;
 			}
 		}
+		assertTrue(newFM1 instanceof FutureMeeting);
+		assertTrue(newFM2 instanceof FutureMeeting);
+		assertTrue(newFM3 instanceof FutureMeeting);
 		
-		assertEquals(fm1, newFM1);
-		assertEquals(fm2, newFM2);
-		assertEquals(fm3, newFM3);
-
+		assertTrue(newFM1.getId() == id1);
+		assertTrue(newFM2.getId() == id2);
+		assertTrue(newFM3.getId() == id3);
+		
+		
 	}
 	
 	// @Test

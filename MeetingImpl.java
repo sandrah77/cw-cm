@@ -6,7 +6,7 @@ import java.util.Set;
  * Meetings have unique IDs, scheduled date and a list of participating contacts
  * @author ocouls01
  */
-public abstract class MeetingImpl implements Meeting {
+public abstract class MeetingImpl implements Meeting, java.io.Serializable {
 	private int ID;
 	private Calendar date;
 	private Set<Contact> contacts;
