@@ -159,7 +159,6 @@ public class ContactManagerImpl implements ContactManager{
 				} else {
 					return (FutureMeeting) m;
 				}
-				
 			}
 		}
 		return null;
