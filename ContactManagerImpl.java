@@ -37,13 +37,27 @@ public class ContactManagerImpl implements ContactManager{
 		presentDate = new GregorianCalendar();
 		
 		File contactFile = new File("." + File.separator + FILENAME);
+		File backupFile = new File("." + File.separator + BACKUP);
 		
-		if (!contactFile.exists()) {
+		
+		if (!contactFile.exists() && !backupFile.exists()) {
 			contacts = new HashSet<Contact>();
 			meetings = new ArrayList<Meeting>();
-		} else {
-			try(ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(contactFile)));) {
+		} else if (backupFile.exists()) {
+			//Load from the backup in the case that the last flush was corrupted 
+			readFromFile(backupFile);
+		} 
+		else {
+			readFromFile(contactFile);
+			
+		}
+		
+	}
+	
+	//Private method to avoid repetition of code in constructor.
+	private void readFromFile(File inputFile) {
+		try(ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(inputFile)));) {
 						
 				Object o = input.readObject();
 				if (o instanceof List) {
@@ -65,15 +79,7 @@ public class ContactManagerImpl implements ContactManager{
 				System.err.println("Problem with write");
 				ex.printStackTrace();
 			}
-		}
-		
-	
-		
-		
-		
-		
 	}
-	
 	/**
 	 * Add a new meeting to be held in the future.
 	 *
