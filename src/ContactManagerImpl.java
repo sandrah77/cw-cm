@@ -258,8 +258,22 @@ public class ContactManagerImpl implements ContactManager{
 			}
 		}
 
-		//return List from private method which sorts the elements of the set
-		return sortList(unsortedOutput);
+        List<Meeting> sortedOutput = sortList(unsortedOutput);
+
+        for (int i = 0; i < sortedOutput.size(); i++) {
+            for(int j = 0; j < sortedOutput.size(); j++) {
+                if(sortedOutput.get(i).getId() == sortedOutput.get(j).getId()) {
+
+                } else if(sortedOutput.get(i).getContacts().equals(sortedOutput.get(j).getContacts())) {
+                    if (sortedOutput.get(i).getDate().compareTo(sortedOutput.get(j).getDate()) == 0) {
+                        sortedOutput.remove(j);
+                    }
+                }
+            }
+        }
+
+
+        return sortedOutput;
 	}
 
 	/**
