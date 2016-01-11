@@ -210,21 +210,9 @@ public class ContactManagerImpl implements ContactManager{
 				}
 			}
 
-			// Use sortList method to sort the set chronologically, returns a list<Meeting>.
+			// Use private method to sort the set chronologically, then remove duplicates. returns a list<Meeting>.
 
-			List<Meeting> sortedOutput = sortList(unsortedOutput);
-
-            for (int i = 0; i < sortedOutput.size(); i++) {
-                for(int j = 0; j < sortedOutput.size(); j++) {
-                    if(sortedOutput.get(i).getId() == sortedOutput.get(j).getId()) {
-
-                    } else if(sortedOutput.get(i).getContacts().equals(sortedOutput.get(j).getContacts())) {
-                        if (sortedOutput.get(i).getDate().compareTo(sortedOutput.get(j).getDate()) == 0) {
-                            sortedOutput.remove(j);
-                        }
-                    }
-                }
-            }
+			List<Meeting> sortedOutput = sortAndRemoveDuplicates(unsortedOutput);
 
 
             return sortedOutput;
@@ -258,19 +246,9 @@ public class ContactManagerImpl implements ContactManager{
 			}
 		}
 
-        List<Meeting> sortedOutput = sortList(unsortedOutput);
+        List<Meeting> sortedOutput = sortAndRemoveDuplicates(unsortedOutput);
 
-        for (int i = 0; i < sortedOutput.size(); i++) {
-            for(int j = 0; j < sortedOutput.size(); j++) {
-                if(sortedOutput.get(i).getId() == sortedOutput.get(j).getId()) {
 
-                } else if(sortedOutput.get(i).getContacts().equals(sortedOutput.get(j).getContacts())) {
-                    if (sortedOutput.get(i).getDate().compareTo(sortedOutput.get(j).getDate()) == 0) {
-                        sortedOutput.remove(j);
-                    }
-                }
-            }
-        }
 
 
         return sortedOutput;
@@ -309,7 +287,7 @@ public class ContactManagerImpl implements ContactManager{
 				return sortedOutput;
 			} else {
 
-				List<Meeting> temp = sortList(unsortedOutput);
+				List<Meeting> temp = sortAndRemoveDuplicates(unsortedOutput);
 				for (Meeting m : temp) {
 					PastMeeting pm = (PastMeeting) m;
 					sortedOutput.add(pm);
@@ -651,7 +629,7 @@ public class ContactManagerImpl implements ContactManager{
 	
 	//Sort Meetings in a given set chronologically, Earliest to Latest
 
-	private List<Meeting> sortList(Set<Meeting> unsortedOutput) {
+	private List<Meeting> sortAndRemoveDuplicates(Set<Meeting> unsortedOutput) {
 		List<Meeting> sortedOutput = new ArrayList<>();
 
 		for(Meeting m : unsortedOutput) {
@@ -660,6 +638,19 @@ public class ContactManagerImpl implements ContactManager{
 		//Use a lambda expression to compare the elements in the sort function.
 
 		Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
+
+        for (int i = 0; i < sortedOutput.size(); i++) {
+            for(int j = 0; j < sortedOutput.size(); j++) {
+                if(sortedOutput.get(i).getId() == sortedOutput.get(j).getId()) {
+
+                } else if(sortedOutput.get(i).getContacts().equals(sortedOutput.get(j).getContacts())) {
+                    if (sortedOutput.get(i).getDate().compareTo(sortedOutput.get(j).getDate()) == 0) {
+                        sortedOutput.remove(j);
+                    }
+                }
+            }
+        }
+
 		return sortedOutput;
 	}
 	
