@@ -206,7 +206,6 @@ public class ContactManagerImpl implements ContactManager{
 		} else if (!validContact) {
 			throw new IllegalArgumentException("Contact provided does not exist in this manager");
 		} else {
-			List<Meeting> sortedOutput = new ArrayList<>();
 		
 			//Make the unsorted list a set to avoid duplicates
 			Set<Meeting> unsortedOutput = new HashSet<>();
@@ -215,15 +214,11 @@ public class ContactManagerImpl implements ContactManager{
 					unsortedOutput.add(m);
 				}
 			}
-			//Move them to a list
-			for (Meeting m : unsortedOutput){
-				sortedOutput.add(m);
-			}
-			
-			//Use a lambda expression to compare the elements in the sort function.
-			
-			Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
-			return sortedOutput;
+
+			//Return results of private sortList method to sort the set chronologically, returns a list<Meeting>.
+
+
+			return sortList(unsortedOutput);
 		}
 	}
 	
@@ -639,7 +634,17 @@ public class ContactManagerImpl implements ContactManager{
 	}
 	
 	
-	
+	private List<Meeting> sortList(Set<Meeting> unsortedOutput) {
+		List<Meeting> sortedOutput = new ArrayList<>();
+
+		for(Meeting m : unsortedOutput) {
+			sortedOutput.add(m);
+		}
+		//Use a lambda expression to compare the elements in the sort function.
+
+		Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
+		return sortedOutput;
+	}
 	
 	
 	
