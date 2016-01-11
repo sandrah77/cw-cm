@@ -761,9 +761,11 @@ public class ContactManagerTest {
         List<PastMeeting> output = cManagerWithContacts.getPastMeetingListFor(testContact);
 
         assertEquals(3, output.size());
-        assertTrue(output.get(0).getNotes() == "two");
+        assertTrue(output.get(0).getNotes() == "three");
         assertTrue(output.get(1).getNotes() == "one");
-        assertTrue(output.get(2).getNotes() == "three");
+        assertTrue(output.get(2).getNotes() == "two");
+
+
 
     }
 

@@ -247,16 +247,9 @@ public class ContactManagerImpl implements ContactManager{
 				unsortedOutput.add(m);
 			}
 		}
-		for (Meeting m : unsortedOutput) {
-			sortedOutput.add(m);
-		}
-		if (date.compareTo(presentDate) < 0) {
-			Collections.sort(sortedOutput, (a,b) -> b.getDate().compareTo(a.getDate()));
-		} else {
-			Collections.sort(sortedOutput, (a,b) -> a.getDate().compareTo(b.getDate()));
-		}
-		
-		return sortedOutput;
+
+		//return List from private method which sorts the elements of the set
+		return sortList(unsortedOutput);
 	}
 
 	/**
