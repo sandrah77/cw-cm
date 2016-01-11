@@ -265,8 +265,8 @@ public class ContactManagerImpl implements ContactManager{
 	 * @throws NullPointerException if the contact is null
 	 */
 	public List<PastMeeting> getPastMeetingListFor(Contact contact) throws IllegalArgumentException, NullPointerException {
-		List<PastMeeting> sortedOutput = new ArrayList<PastMeeting>();
-		Set<PastMeeting> unsortedOutput = new HashSet<PastMeeting>();
+		List<PastMeeting> sortedOutput = new ArrayList<>();
+		Set<Meeting> unsortedOutput = new HashSet<>();
 		//Check valid contact
 		boolean valid = false;
 		for (Contact c : contacts) {
@@ -290,13 +290,14 @@ public class ContactManagerImpl implements ContactManager{
 			if (unsortedOutput.isEmpty()) {
 				return sortedOutput;
 			} else {
-				for (PastMeeting pm : unsortedOutput) {
+
+				List<Meeting> temp = sortList(unsortedOutput);
+				for (Meeting m : temp) {
+					PastMeeting pm = (PastMeeting) m;
 					sortedOutput.add(pm);
 				}
-		
-			Collections.sort(sortedOutput, (a,b) -> b.getDate().compareTo(a.getDate()));
 			
-			return sortedOutput;
+				return sortedOutput;
 			}
 		}
 	}
