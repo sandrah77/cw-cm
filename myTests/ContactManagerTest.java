@@ -645,9 +645,9 @@ public class ContactManagerTest {
     @Test
     public void testGetMeetingListOnForFutureWhereManyExist() {
         //Check Chronology
-        cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 3, 13, 13, 30));
-        cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 3, 13, 14, 30));
-        cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2020, 3, 13, 10, 30));
+        int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 3, 13, 13, 30));
+        int id2 = cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 3, 13, 14, 30));
+        int id3 = cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2020, 3, 13, 10, 30));
 
         List<Meeting> output = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2020, 3, 13));
 
@@ -659,6 +659,10 @@ public class ContactManagerTest {
 
         difference = output.get(1).getDate().compareTo(output.get(2).getDate());
         assertTrue(difference <= 0);
+
+        assertEquals(cManagerWithContacts.getMeeting(id3), output.get(0));
+        assertEquals(cManagerWithContacts.getMeeting(id1), output.get(1));
+        assertEquals(cManagerWithContacts.getMeeting(id2), output.get(2));
 
     }
 

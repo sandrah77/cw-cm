@@ -216,8 +216,6 @@ public class ContactManagerImpl implements ContactManager{
 			}
 
 			//Return results of private sortList method to sort the set chronologically, returns a list<Meeting>.
-
-
 			return sortList(unsortedOutput);
 		}
 	}
@@ -239,8 +237,8 @@ public class ContactManagerImpl implements ContactManager{
 			throw new NullPointerException("Must provide a date to search for");
 		}
 		
-		List<Meeting> sortedOutput = new ArrayList<Meeting>();
-		Set<Meeting> unsortedOutput = new HashSet<Meeting>();
+		List<Meeting> sortedOutput = new ArrayList<>();
+		Set<Meeting> unsortedOutput = new HashSet<>();
 		for (Meeting m : meetings) {
 			//May be some issues here
 			if (date.get(Calendar.ERA) == m.getDate().get(Calendar.ERA) &&
