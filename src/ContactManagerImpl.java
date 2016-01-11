@@ -194,16 +194,11 @@ public class ContactManagerImpl implements ContactManager{
 	 */
 	public List<Meeting> getFutureMeetingList(Contact contact) throws NullPointerException, 
 																	IllegalArgumentException { 
-		boolean validContact = false;
-		for (Contact c : contacts) {
-			if (c.equals(contact)) {
-				validContact = true;
-			}
-		}
+
 		
 		if (contact == null) {
 			throw new NullPointerException("Must provide a contact to search for");
-		} else if (!validContact) {
+		} else if (!isValidContact(contact)) {
 			throw new IllegalArgumentException("Contact provided does not exist in this manager");
 		} else {
 		
@@ -236,8 +231,7 @@ public class ContactManagerImpl implements ContactManager{
 		if (date == null) {
 			throw new NullPointerException("Must provide a date to search for");
 		}
-		
-		List<Meeting> sortedOutput = new ArrayList<>();
+
 		Set<Meeting> unsortedOutput = new HashSet<>();
 		for (Meeting m : meetings) {
 			//May be some issues here
@@ -267,17 +261,11 @@ public class ContactManagerImpl implements ContactManager{
 	public List<PastMeeting> getPastMeetingListFor(Contact contact) throws IllegalArgumentException, NullPointerException {
 		List<PastMeeting> sortedOutput = new ArrayList<>();
 		Set<Meeting> unsortedOutput = new HashSet<>();
-		//Check valid contact
-		boolean valid = false;
-		for (Contact c : contacts) {
-			if (c.equals(contact)) {
-				valid = true;
-			}
-		}
+
 		
 		if (contact == null) {
 			throw new NullPointerException("Must provide a contact to search for");
-		} else if (!valid) {
+		} else if (!isValidContact(contact)) {
 			throw new IllegalArgumentException("Specified contact does not exist in this ContactManager");
 		} else if (getAllPastMeetings().isEmpty()) {
 			return sortedOutput;
@@ -509,7 +497,7 @@ public class ContactManagerImpl implements ContactManager{
 		}
 		
 		//Create an output set and populate it for return
-		Set <Contact> output = new HashSet<Contact>();
+		Set <Contact> output = new HashSet<>();
 		
 		for (Contact c : getContacts("")) {
 			for (int i : ids) {
@@ -583,11 +571,7 @@ public class ContactManagerImpl implements ContactManager{
 		if (success && backup.exists()) {
 			backup.delete();
 		}
-		
-			
-		
-		
-		
+
 	}
 	
 	
@@ -624,8 +608,19 @@ public class ContactManagerImpl implements ContactManager{
 		}
 		return validContacts;
 	}
+
+	private boolean isValidContact(Contact contact) {
+		boolean validContact = false;
+		for (Contact c : contacts) {
+			if (c.equals(contact)) {
+				validContact = true;
+			}
+		}
+		return validContact;
+	}
 	
-	
+	//Sort Meetings in a given set chronologically, Earliest to Latest
+
 	private List<Meeting> sortList(Set<Meeting> unsortedOutput) {
 		List<Meeting> sortedOutput = new ArrayList<>();
 
@@ -663,7 +658,7 @@ public class ContactManagerImpl implements ContactManager{
 	 */
 	
 	public List<FutureMeeting> getAllFutureMeetings() {
-		List<FutureMeeting> output = new ArrayList<FutureMeeting>();
+		List<FutureMeeting> output = new ArrayList<>();
 		
 		for (Meeting m : meetings) {
 			if (m instanceof FutureMeeting) {
@@ -681,7 +676,7 @@ public class ContactManagerImpl implements ContactManager{
 	 */
 	
 	public List<PastMeeting> getAllPastMeetings() {
-		List<PastMeeting> output = new ArrayList<PastMeeting>();
+		List<PastMeeting> output = new ArrayList<>();
 		
 		for (Meeting m : meetings) {
 			if (m instanceof PastMeeting) {
