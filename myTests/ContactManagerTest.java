@@ -573,9 +573,9 @@ public class ContactManagerTest {
 
     @Test
     public void testChronologicalOrderOfGetFutureMeetingList() {
-        cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 11, 5));
-        cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 1, 3));
-        cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13));
+        int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 11, 5));
+        int id2 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 1, 3));
+        int id3 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13));
 
         Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
         Contact deadpool = null;
@@ -586,14 +586,21 @@ public class ContactManagerTest {
         }
         List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
 
-        //First in the list will be the soonest to now, so second in the list should
+       /* //First in the list will be the soonest to now, so second in the list should
         //be after. If so, these ints will be negative
 
         int difference = fmList.get(0).getDate().compareTo(fmList.get(1).getDate());
         assertTrue(difference < 0);
 
         difference = fmList.get(1).getDate().compareTo(fmList.get(2).getDate());
-        assertTrue(difference < 0);
+        assertTrue(difference < 0);*/
+
+        //Chronological Order - earliest to latest
+        assertEquals(fmList.get(0), cManagerWithContacts.getFutureMeeting(id1));
+
+        assertEquals(fmList.get(1), cManagerWithContacts.getFutureMeeting(id3));
+
+        assertEquals(fmList.get(2), cManagerWithContacts.getFutureMeeting(id2));
 
 
     }
