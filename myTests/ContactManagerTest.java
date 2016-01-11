@@ -621,9 +621,9 @@ public class ContactManagerTest {
 
         assertEquals(5, fmList.size());
 
-        assertEquals(id1, fmList.get(0));
-        assertEquals(id2, fmList.get(4));
-        assertEquals(id4, fmList.get(3));
+        assertEquals(id1, fmList.get(0).getId());
+        assertEquals(id2, fmList.get(4).getId());
+        assertEquals(id4, fmList.get(3).getId());
 
         //don't know which is first id3 or id5 as both have same time, but different contact so not duplicates
     }
