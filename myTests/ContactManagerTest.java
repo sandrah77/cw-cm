@@ -678,11 +678,14 @@ public class ContactManagerTest {
         assertNotNull(output);
         assertEquals(3, output.size());
 
+        //check that output list is ordered earliest to latest.
         int difference = output.get(0).getDate().compareTo(output.get(1).getDate());
-        assertTrue(difference >= 0);
+        assertTrue(difference <= 0);
 
         difference = output.get(1).getDate().compareTo(output.get(2).getDate());
-        assertTrue(difference >= 0);
+        assertTrue(difference <= 0);
+
+
     }
 
     @Test
