@@ -719,6 +719,28 @@ public class ContactManagerTest {
 
     }
 
+    @Test
+    public void testGetMeetingListOnWithDuplicates() {
+        //Work with futuremeetings as we can get the ids easily
+        int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 3, 13, 13, 30));
+        int id2 = cManagerWithContacts.addFutureMeeting(testSet2, new GregorianCalendar(2020, 3, 13, 14, 30));
+        int id3 = cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2020, 3, 13, 10, 30));
+
+        int id4 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 3, 13, 13, 30));
+        int id5 = cManagerWithContacts.addFutureMeeting(testSet3, new GregorianCalendar(2020, 3, 13, 13, 30));
+
+
+
+        List<Meeting> fmList = cManagerWithContacts.getMeetingListOn(new GregorianCalendar(2020, 3, 13));
+
+        assertEquals(4, fmList.size());
+
+        assertEquals(id3, fmList.get(0).getId());
+        assertEquals(id2, fmList.get(3).getId());
+
+
+    }
+
     @Test (expected = NullPointerException.class)
     public void testGetMeetingListOnWhereDateIsNull() {
         cManagerWithContacts.getMeetingListOn(null);
