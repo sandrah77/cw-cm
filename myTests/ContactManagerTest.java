@@ -32,6 +32,7 @@ public class ContactManagerTest {
     private Set<Contact> testSet;
     private Set<Contact> testSet2;
     private Set<Contact> testSet3;
+    private Set<Contact> testSet4;
     private Calendar testFutureDate;
     private Calendar testPastDate;
 
@@ -55,6 +56,7 @@ public class ContactManagerTest {
         testSet = cManagerWithContacts.getContacts("Wilson");
         testSet2 = cManagerWithContacts.getContacts("Bruce");
         testSet3 = cManagerWithContacts.getContacts(1,4,5);
+        testSet4 = cManagerWithContacts.getContacts("Wade Wilson");
 
 
         testFutureDate = new GregorianCalendar(2020, 7, 29, 15, 0);
@@ -586,15 +588,6 @@ public class ContactManagerTest {
         }
         List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
 
-       /* //First in the list will be the soonest to now, so second in the list should
-        //be after. If so, these ints will be negative
-
-        int difference = fmList.get(0).getDate().compareTo(fmList.get(1).getDate());
-        assertTrue(difference < 0);
-
-        difference = fmList.get(1).getDate().compareTo(fmList.get(2).getDate());
-        assertTrue(difference < 0);*/
-
         //Chronological Order - earliest to latest
         assertEquals(fmList.get(0), cManagerWithContacts.getFutureMeeting(id1));
 
@@ -603,6 +596,36 @@ public class ContactManagerTest {
         assertEquals(fmList.get(2), cManagerWithContacts.getFutureMeeting(id2));
 
 
+    }
+
+    @Test
+    public void testGetFutureMeetingListWhereDuplicatesExist() {
+        //Duplicates are defined as meetings with the same contacts at exactly the same time (not just date)
+
+        int id1 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2017, 11, 5));
+        int id2 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2020, 1, 3));
+        int id3 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13, 10, 30));
+        int id4 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13, 11, 30));
+        int id5 = cManagerWithContacts.addFutureMeeting(testSet4, new GregorianCalendar(2019, 4, 13, 10, 30));
+        //duplicate
+        int id6 = cManagerWithContacts.addFutureMeeting(testSet, new GregorianCalendar(2019, 4, 13, 10, 30));
+
+        Set<Contact> wadeSet = cManagerWithContacts.getContacts("Wade");
+        Contact deadpool = null;
+        for (Contact c : wadeSet) {
+            if (c.getName().equals("Wade Wilson")) {
+                deadpool = c;
+            }
+        }
+        List<Meeting> fmList = cManagerWithContacts.getFutureMeetingList(deadpool);
+
+        assertEquals(5, fmList.size());
+
+        assertEquals(id1, fmList.get(0));
+        assertEquals(id2, fmList.get(4));
+        assertEquals(id4, fmList.get(3));
+
+        //don't know which is first id3 or id5 as both have same time, but different contact so not duplicates
     }
 
     @Test (expected = IllegalArgumentException.class)
